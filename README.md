@@ -21,9 +21,10 @@
 <img src="https://img.shields.io/badge/Cdec_Invite-4374D9?style=for-the-badge&logo=discord&logoColor=white"></a>
 
 <h3> LICENSE 
-<a href="https://github.com/sojakstudio/Kumyul2/LICENSE_EN.md">English License</a>
 <br/>
-<a href="https://github.com/sojakstudio/Kumyul2/LICENSE_KR.md">한글 전문</a> </h3>
+<a href="https://github.com/sojakstudio/Kumyul2/LICENSE_EN.md">- English License</a>
+<br/>
+<a href="https://github.com/sojakstudio/Kumyul2/LICENSE_KR.md">- 한글 전문</a> </h3>
 
 <h3>Copyright (C) 2022 SOJAK STUDIO</h3>
 This program is free software: you can redistribute it and/or modify
