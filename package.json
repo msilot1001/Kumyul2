@@ -1,0 +1,40 @@
+{
+  "name": "kumyul2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build",
+    "start": "node dist/index.js",
+    "buildstart": "rm -rf dist && tsc --build && node dist/index.js",
+    "deploy-commands": "rm -rf dist && tsc --build && node dist/deploy-commands.js"
+  },
+  "engines": {
+    "node": "16.9.0",
+    "npm": "8.7.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/rest": "^0.4.1",
+    "discord-api-types": "^0.33.1",
+    "discord.js": "^13.7.0",
+    "dotenv": "^16.0.1",
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1"
+  }
+}
