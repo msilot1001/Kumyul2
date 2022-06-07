@@ -14,6 +14,10 @@ CommandBundle.forEach(value => {
 });
 
 if (process.env.TESTTOKEN !== undefined && process.env.CLIENTID !== undefined) {
+  logger.info(
+    `TOKEN: ${process.env.TESTTOKEN}, CLIENTID: ${process.env.CLIENTID}`,
+  );
+
   const rest = new REST({ version: '10' }).setToken(process.env.TESTTOKEN);
 
   rest
@@ -25,7 +29,7 @@ if (process.env.TESTTOKEN !== undefined && process.env.CLIENTID !== undefined) {
         `Successfully registered application commands. : ${commandArray}`,
       ),
     )
-    .catch(logger.error);
+    .catch(err => logger.error(err));
 } else {
   logger.error('Env Value undefined');
 }

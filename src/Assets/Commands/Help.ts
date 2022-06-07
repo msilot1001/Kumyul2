@@ -1,4 +1,4 @@
-import { Message, Interaction } from 'discord.js';
+import { Message, BaseCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
@@ -10,8 +10,9 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: Interaction) => {
+  SlashExecute: async (interaction: BaseCommandInteraction) => {
     logger.info('SlashExecute');
+    interaction.reply('Help Command');
   },
 };
 

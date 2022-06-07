@@ -21,7 +21,6 @@
   "rules": {
     "class-methods-use-this": 0,
     "linebreak-style": 0,
-    "camelcase": 0,
     "global-require": 0,
     "import/no-dynamic-require": 0,
     "no-trailing-spaces": 0,
@@ -32,6 +31,7 @@
     "import/extensions": 0,
     "import/no-unresolved": 0,
     "prefer-destructuring": 0,
-    "no-async-promise-executor": 1
+    "no-async-promise-executor": 1,
+    "no-useless-return": 1
   }
 }
