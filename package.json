@@ -5,17 +5,17 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc --build",
-    "start": "node dist/index.js",
-    "buildstart": "rm -rf dist && tsc --build && node dist/index.js",
-    "deploy-commands": "rm -rf dist && tsc --build && node dist/deploy-commands.js"
+    "build": "yarn tsc --build",
+    "start": "yarn node dist/index.js",
+    "buildstart": "rm -rf dist && yarn tsc --build && yarn node dist/index.js",
+    "deploy": "rm -rf dist && yarn tsc --build && yarn node dist/deploy-commands.js"
   },
   "engines": {
     "node": "16.9.0",
     "npm": "8.7.0"
   },
   "keywords": [],
-  "author": "",
+  "author": "msilot1001 <msilot1001@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.27.0",
@@ -31,12 +31,16 @@
   "dependencies": {
     "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
+    "@typegoose/typegoose": "^9.9.0",
+    "@types/mongoose": "^5.11.97",
     "@types/pg": "^8.6.5",
     "discord-api-types": "^0.33.1",
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
+    "mongoose": "^6.3.5",
     "pg": "^8.7.3",
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.6.1"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }

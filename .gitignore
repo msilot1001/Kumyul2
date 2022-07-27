@@ -3,4 +3,7 @@ config.json
 .env
 dist
 logs
+.pnp.cjs
+.pnp.loader.mjs
+.yarn
 src/Assets/korcen.ts

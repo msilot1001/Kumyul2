@@ -3,8 +3,9 @@ import logger from '../Utils/Logger.js';
 import { GetConfig } from '../Config/ConfigManager.js';
 import { ConfigEnum } from '../Enums/Enums.js';
 import CommandBundle from '../Commands/CommandBundle.js';
+import Parse from '../Debug/CommandParser.js';
 
-const prefix = 'ㅌㅁ';
+const prefix = 'ㅁ';
 
 async function MsgRecv(msg: Message) {
   // 봇이면 리턴
@@ -16,6 +17,11 @@ async function MsgRecv(msg: Message) {
   logger.info(
     `[ ${msg.guild?.name} ] ${msg.member?.user.username}#${msg.member?.user.discriminator} : ${msg.content}`,
   );
+
+  // 커맨드 확인
+  if (!msg.content.startsWith('>cdec')) {
+    Parse(msg, msg.content.substring(0, 4).trim().split(''));
+  }
 
   // prefix 시작 안하면 리턴
   if (!msg.content.startsWith(prefix)) {

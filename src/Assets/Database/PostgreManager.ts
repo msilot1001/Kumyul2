@@ -50,7 +50,7 @@ export function getPool() {
     ).concat('', '?sslmode=require'),
     // Beware! The ssl object is overwritten when parsing the connectionString
     ssl: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: true,
     },
   };
 

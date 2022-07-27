@@ -1,21 +1,34 @@
 // 모듈 로드
-import { Message, Interaction } from 'discord.js';
+import { Message, Interaction, Guild } from 'discord.js';
 import * as dotenv from 'dotenv';
 import * as BotEvent from './Assets/BotEvent/BotEvent.js';
 import { LoadConfig } from './Assets/Config/ConfigManager.js';
+import { Connect } from './Assets/Database/DBManager.js';
+import GuildAdd from './Assets/BotEvent/GuildAdd.js';
 
 // .env 로딩
 dotenv.config();
 await LoadConfig();
+await Connect();
 
-BotEvent.client.once('ready', () => BotEvent.Start());
+const cli = BotEvent.client;
 
-BotEvent.client.on('messageCreate', async (msg: Message) => {
+cli.once('ready', () => BotEvent.Start());
+
+cli.on('messageCreate', async (msg: Message) => {
   BotEvent.MsgRecv(msg);
 });
 
-BotEvent.client.on('interactionCreate', async (interaction: Interaction) => {
+cli.on('interactionCreate', async (interaction: Interaction) => {
   BotEvent.InterAcRecv(interaction);
 });
 
-BotEvent.client.login(process.env.TESTTOKEN);
+cli.on('guildCreate', async (guild: Guild) => {
+  GuildAdd(guild);
+});
+
+cli.login(
+  process.env.NODE_ENV === 'production'
+    ? process.env.TOKEN
+    : process.env.TESTTOKEN,
+);

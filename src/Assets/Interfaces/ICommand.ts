@@ -1,10 +1,8 @@
-import { Message, BaseCommandInteraction } from 'discord.js';
+import { Message, BaseCommandInteraction, CacheType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
-interface ICommand {
+export default interface ICommand {
   Builder: SlashCommandBuilder;
   MsgExecute: (message: Message) => Promise<void>;
   SlashExecute: (interaction: BaseCommandInteraction) => Promise<void>;
 }
-
-export default ICommand;
