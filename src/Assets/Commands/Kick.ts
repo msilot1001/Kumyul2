@@ -30,9 +30,9 @@ const command: ICommand = {
     const perm = interaction.member?.permissions;
 
     // 관리자 권한 확인
-    if (!(perm as Permissions).toArray().includes('BAN_MEMBERS')) {
+    if (!(perm as Permissions).toArray().includes('KICK_MEMBERS')) {
       interaction.reply({
-        content: '이 명령어를 실행하려면 멤버 차단하기 권한이 필요해요!',
+        content: '이 명령어를 실행하려면 멤버 추방하기 권한이 필요해요!',
         ephemeral: true,
       });
 

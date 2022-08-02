@@ -1,5 +1,5 @@
 import { Guild } from 'discord.js';
-import { embed as embedtemp } from '../Config/EmbedConfig.js';
+import { embedtemp } from '../Config/EmbedConfig.js';
 import { GuildModel } from '../Database/GuildSchema.js';
 import logger from '../Utils/Logger.js';
 
@@ -50,7 +50,7 @@ export default function GuildAdd(guild: Guild) {
             // 없으면 생성
             GuildModel.create({
               id: guild.id,
-              warnlimit: 0,
+              warnlimit: 10,
               customdetection: '{}',
             });
           });

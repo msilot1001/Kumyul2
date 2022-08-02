@@ -9,8 +9,12 @@ export class GuildClass {
   @prop({ required: true, default: 0 })
   warnlimit!: number;
 
+  // JSON
+  @prop({ required: true, default: '[]' })
+  userwarns!: string;
+
   // json 저장
-  @prop({ required: true, default: '{}' })
+  @prop({ required: true, default: '[]' })
   customdetection!: string;
 }
 
