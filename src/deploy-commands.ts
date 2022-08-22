@@ -2,8 +2,8 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import * as dotenv from 'dotenv';
-import CommandBundle from './Assets/Commands/CommandBundle.js';
-import logger from './Assets/Utils/Logger.js';
+import CommandBundle from './Commands/CommandBundle.js';
+import logger from './Utils/Logger.js';
 
 dotenv.config();
 

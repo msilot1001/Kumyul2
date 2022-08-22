@@ -1,10 +1,10 @@
 // 모듈 로드
 import { Message, Interaction, Guild } from 'discord.js';
 import * as dotenv from 'dotenv';
-import * as BotEvent from './Assets/BotEvent/BotEvent.js';
-import { LoadConfig } from './Assets/Config/ConfigManager.js';
-import { Connect } from './Assets/Database/DBManager.js';
-import GuildAdd from './Assets/BotEvent/GuildAdd.js';
+import * as BotEvent from './BotEvent/BotEvent.js';
+import { LoadConfig } from './Config/ConfigManager.js';
+import { Connect } from './Database/DBManager.js';
+import GuildAdd from './BotEvent/GuildAdd.js';
 
 // .env 로딩
 dotenv.config();
