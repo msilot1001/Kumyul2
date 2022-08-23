@@ -29,6 +29,9 @@ export class VoteClass {
   // 투표 생성자 ID
   @prop({ required: true })
   maker!: string;
+
+  @prop({ required: true })
+  makername!: string;
 }
 
 export const VoteModel = getModelForClass(VoteClass);

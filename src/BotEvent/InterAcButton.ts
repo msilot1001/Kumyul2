@@ -62,7 +62,7 @@ async function InterAcButton(interaction: ButtonInteraction) {
           { name: '반대', value: `${res.disagree}`, inline: true },
         )
         .setFooter({
-          text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
+          text: `${res.makername}님이 시작했어요!`,
         });
 
       interaction.channel?.messages.fetch(res.msgid).then(msg => {
@@ -100,18 +100,6 @@ async function InterAcButton(interaction: ButtonInteraction) {
     }
     if (type === 'disagree') {
       res.disagree += 1;
-      embed = new MessageEmbed()
-        .setColor(color)
-        .setAuthor({ name: '시덱이', iconURL: url })
-        .setTitle(res.topic)
-        .setDescription(res.description || '새 투표에요!')
-        .addFields(
-          { name: '찬성', value: `${res.agree}` },
-          { name: '반대', value: `${res.disagree}` },
-        )
-        .setFooter({
-          text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
-        });
 
       res.save();
 
@@ -128,7 +116,7 @@ async function InterAcButton(interaction: ButtonInteraction) {
         { name: '반대', value: `${res.disagree}`, inline: true },
       )
       .setFooter({
-        text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
+        text: `${res.makername}님이 시작했어요!`,
       });
 
     // #endregion

@@ -99,6 +99,7 @@ const command: ICommand = {
         disagree: 0,
         uservoted: new Map<string, boolean>(),
         maker: interaction.user.id,
+        makername: `${interaction.user.username}#${interaction.user.discriminator}`,
       });
 
       interaction.reply({
