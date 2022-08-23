@@ -25,6 +25,10 @@ export class VoteClass {
   // false => disagree
   @prop({ required: true })
   uservoted!: Map<string, boolean>;
+
+  // 투표 생성자 ID
+  @prop({ required: true })
+  maker!: string;
 }
 
 export const VoteModel = getModelForClass(VoteClass);

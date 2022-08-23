@@ -11,17 +11,11 @@ import logger from '../Utils/Logger.js';
 async function InterAcButton(interaction: ButtonInteraction) {
   if (!interaction.customId.startsWith('cdvo.')) return;
 
-  logger.info(`vote customId: ${interaction.customId}`);
-
   const [id, type] = interaction.customId.substring(5).split('_');
-
-  logger.info(`query id: ${`${id}_${type}`}`);
 
   try {
     // db 조회
     const res = await VoteModel.findOne({ id });
-
-    logger.info(`res: ${res}`);
 
     if (!res) return;
 
@@ -47,6 +41,15 @@ async function InterAcButton(interaction: ButtonInteraction) {
 
     // 락 버튼
     if (type === 'lock') {
+      if (res.maker !== interaction.user.id) {
+        interaction.reply({
+          content: '투표의 생성자만 투표를 종료할 수 있어요!',
+          ephemeral: true,
+        });
+
+        return;
+      }
+
       await VoteModel.deleteOne({ id });
 
       embed = new MessageEmbed()
@@ -55,8 +58,8 @@ async function InterAcButton(interaction: ButtonInteraction) {
         .setTitle(`[종료됨] ${res.topic}`)
         .setDescription(res.description || '새 투표에요!')
         .addFields(
-          { name: '찬성', value: `${res.agree}` },
-          { name: '반대', value: `${res.disagree}` },
+          { name: '찬성', value: `${res.agree}`, inline: true },
+          { name: '반대', value: `${res.disagree}`, inline: true },
         )
         .setFooter({
           text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
@@ -79,8 +82,6 @@ async function InterAcButton(interaction: ButtonInteraction) {
     if (res.uservoted.has(interaction.user.id)) {
       const voted = res.uservoted.get(interaction.user.id);
 
-      logger.info(`voted: ${voted}`);
-
       // agree 눌렀을 경우
       if (voted) res.agree -= 1;
       // disagree 경우
@@ -92,18 +93,6 @@ async function InterAcButton(interaction: ButtonInteraction) {
     // #region 값 변화시키기
     if (type === 'agree') {
       res.agree += 1;
-      embed = new MessageEmbed()
-        .setColor(color)
-        .setAuthor({ name: '시덱이', iconURL: url })
-        .setTitle(res.topic)
-        .setDescription(res.description || '새 투표에요!')
-        .addFields(
-          { name: '찬성', value: `${res.agree}` },
-          { name: '반대', value: `${res.disagree}` },
-        )
-        .setFooter({
-          text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
-        });
 
       res.save();
 
@@ -129,9 +118,20 @@ async function InterAcButton(interaction: ButtonInteraction) {
       res.uservoted.set(interaction.user.id, false);
     }
 
-    // #endregion
+    embed = new MessageEmbed()
+      .setColor(color)
+      .setAuthor({ name: '시덱이', iconURL: url })
+      .setTitle(res.topic)
+      .setDescription(res.description || '새 투표에요!')
+      .addFields(
+        { name: '찬성', value: `${res.agree}`, inline: true },
+        { name: '반대', value: `${res.disagree}`, inline: true },
+      )
+      .setFooter({
+        text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
+      });
 
-    logger.info(`final res: ${res}`);
+    // #endregion
 
     interaction.channel?.messages.fetch(res.msgid).then(msg => {
       msg.edit({ embeds: [embed], components: [buttons] });

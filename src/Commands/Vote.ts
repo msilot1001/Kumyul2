@@ -62,7 +62,10 @@ const command: ICommand = {
         .setAuthor({ name: '시덱이', iconURL: url })
         .setTitle(topic)
         .setDescription(desc || '새 투표에요!')
-        .addFields({ name: '찬성', value: '0' }, { name: '반대', value: '0' })
+        .addFields(
+          { name: '찬성', value: '0', inline: true },
+          { name: '반대', value: '0', inline: true },
+        )
         .setFooter({
           text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
         });
@@ -95,6 +98,7 @@ const command: ICommand = {
         agree: 0,
         disagree: 0,
         uservoted: new Map<string, boolean>(),
+        maker: interaction.user.id,
       });
 
       interaction.reply({
