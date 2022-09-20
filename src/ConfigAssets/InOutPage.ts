@@ -56,11 +56,11 @@ const InOutPage = async (interaction: BaseCommandInteraction, uuid: string) => {
         new MessageButton()
           .setLabel('유저 자동 역할 설정')
           .setStyle('PRIMARY')
-          .setCustomId(`cdec.${uuid}.config.execute.userautoroleconfig`),
+          .setCustomId(`cdec.${uuid}.config.execute.userroleconfig`),
         new MessageButton()
           .setLabel('봇 자동 역할 설정')
           .setStyle('PRIMARY')
-          .setCustomId(`cdec.${uuid}.config.execute.botautoroleconfig`),
+          .setCustomId(`cdec.${uuid}.config.execute.botroleconfig`),
         new MessageButton()
           .setLabel('입장 메세지 설정')
           .setStyle('PRIMARY')

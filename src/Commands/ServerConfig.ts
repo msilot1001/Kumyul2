@@ -121,6 +121,7 @@ export { PageList, ExecuteList };
 
 // #endregion
 
+// ⚠️ 열지마라 이거
 const command: ICommand = {
   Builder: new SlashCommandBuilder()
     .setName('서버설정')
