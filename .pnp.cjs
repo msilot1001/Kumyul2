@@ -46,7 +46,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:aa2b693c16671c2e6ed790d764f80118bce9c3362959c843cea63e6f8b8fe40b74f305a7e13e2f20553eebb41710934dfb13c7fd739b96f86422172a66d194d6#npm:5.30.5"],\
             ["cors", "npm:2.8.5"],\
             ["discord-api-types", "npm:0.33.5"],\
-            ["discord.js", "npm:13.8.1"],\
+            ["discord.js", "npm:13.10.3"],\
             ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-config-airbnb-base", "virtual:aa2b693c16671c2e6ed790d764f80118bce9c3362959c843cea63e6f8b8fe40b74f305a7e13e2f20553eebb41710934dfb13c7fd739b96f86422172a66d194d6#npm:15.0.0"],\
@@ -101,13 +101,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:0.14.0", {\
-          "packageLocation": "./.yarn/cache/@discordjs-builders-npm-0.14.0-dbd294b372-044f1864bc.zip/node_modules/@discordjs/builders/",\
+        ["npm:0.16.0", {\
+          "packageLocation": "./.yarn/cache/@discordjs-builders-npm-0.16.0-5d4bdc03c0-bf7ab00924.zip/node_modules/@discordjs/builders/",\
           "packageDependencies": [\
-            ["@discordjs/builders", "npm:0.14.0"],\
-            ["@sapphire/shapeshift", "npm:3.4.0"],\
-            ["@sindresorhus/is", "npm:4.6.0"],\
-            ["discord-api-types", "npm:0.33.5"],\
+            ["@discordjs/builders", "npm:0.16.0"],\
+            ["@sapphire/shapeshift", "npm:3.6.0"],\
+            ["discord-api-types", "npm:0.36.3"],\
             ["fast-deep-equal", "npm:3.1.3"],\
             ["ts-mixer", "npm:6.0.1"],\
             ["tslib", "npm:2.4.0"]\
@@ -218,6 +217,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@sapphire/async-queue", "npm:1.3.2"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:1.5.0", {\
+          "packageLocation": "./.yarn/cache/@sapphire-async-queue-npm-1.5.0-f065e42c78-983dbd1fd1.zip/node_modules/@sapphire/async-queue/",\
+          "packageDependencies": [\
+            ["@sapphire/async-queue", "npm:1.5.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@sapphire/shapeshift", [\
@@ -228,10 +234,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:3.4.0", {\
-          "packageLocation": "./.yarn/cache/@sapphire-shapeshift-npm-3.4.0-2076ec6f8b-fede7cc81c.zip/node_modules/@sapphire/shapeshift/",\
+        ["npm:3.6.0", {\
+          "packageLocation": "./.yarn/cache/@sapphire-shapeshift-npm-3.6.0-c6d7dfb1d8-31b426424d.zip/node_modules/@sapphire/shapeshift/",\
           "packageDependencies": [\
-            ["@sapphire/shapeshift", "npm:3.4.0"]\
+            ["@sapphire/shapeshift", "npm:3.6.0"],\
+            ["fast-deep-equal", "npm:3.1.3"],\
+            ["lodash.uniqwith", "npm:4.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1282,22 +1290,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["discord-api-types", "npm:0.33.5"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:0.36.3", {\
+          "packageLocation": "./.yarn/cache/discord-api-types-npm-0.36.3-63aa977556-3089c0fb37.zip/node_modules/discord-api-types/",\
+          "packageDependencies": [\
+            ["discord-api-types", "npm:0.36.3"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["discord.js", [\
-        ["npm:13.8.1", {\
-          "packageLocation": "./.yarn/cache/discord.js-npm-13.8.1-f93190cd66-1311aa3be7.zip/node_modules/discord.js/",\
+        ["npm:13.10.3", {\
+          "packageLocation": "./.yarn/cache/discord.js-npm-13.10.3-649a1521d4-e0656fb71f.zip/node_modules/discord.js/",\
           "packageDependencies": [\
-            ["discord.js", "npm:13.8.1"],\
-            ["@discordjs/builders", "npm:0.14.0"],\
+            ["discord.js", "npm:13.10.3"],\
+            ["@discordjs/builders", "npm:0.16.0"],\
             ["@discordjs/collection", "npm:0.7.0"],\
-            ["@sapphire/async-queue", "npm:1.3.2"],\
+            ["@sapphire/async-queue", "npm:1.5.0"],\
             ["@types/node-fetch", "npm:2.6.2"],\
             ["@types/ws", "npm:8.5.3"],\
             ["discord-api-types", "npm:0.33.5"],\
             ["form-data", "npm:4.0.0"],\
             ["node-fetch", "virtual:aa7e15884c4069a8642f32a66f43b848a88a53f9522dfd1f30cf266744ecdc9b37eb0731b5f649b01977abc3bd6b838ae1fc40bf0cf9985a1022ed5a575324a3#npm:2.6.7"],\
-            ["ws", "virtual:f93190cd66e7db48d4befca4103220c586e3868f37c96637f881356d80ee864fac4dbc4ee6d3433ba27338667b5a12dd57483214b2505e3564ace14eeb5e44e4#npm:8.8.0"]\
+            ["ws", "virtual:649a1521d4342684979fd1d903a1ef84f1966310e8f5780490c975e47fac0f1fb99436d1b31e6d886c0a2873359b71620e36bfa468115e74adc26cb9d376623c#npm:8.8.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2548,7 +2563,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:aa2b693c16671c2e6ed790d764f80118bce9c3362959c843cea63e6f8b8fe40b74f305a7e13e2f20553eebb41710934dfb13c7fd739b96f86422172a66d194d6#npm:5.30.5"],\
             ["cors", "npm:2.8.5"],\
             ["discord-api-types", "npm:0.33.5"],\
-            ["discord.js", "npm:13.8.1"],\
+            ["discord.js", "npm:13.10.3"],\
             ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-config-airbnb-base", "virtual:aa2b693c16671c2e6ed790d764f80118bce9c3362959c843cea63e6f8b8fe40b74f305a7e13e2f20553eebb41710934dfb13c7fd739b96f86422172a66d194d6#npm:15.0.0"],\
@@ -2604,6 +2619,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-ad580b4bdb.zip/node_modules/lodash.merge/",\
           "packageDependencies": [\
             ["lodash.merge", "npm:4.6.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["lodash.uniqwith", [\
+        ["npm:4.5.0", {\
+          "packageLocation": "./.yarn/cache/lodash.uniqwith-npm-4.5.0-61b7322c06-d49a4565ed.zip/node_modules/lodash.uniqwith/",\
+          "packageDependencies": [\
+            ["lodash.uniqwith", "npm:4.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4158,17 +4182,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["ws", [\
-        ["npm:8.8.0", {\
-          "packageLocation": "./.yarn/cache/ws-npm-8.8.0-89e1c83090-6ceed1ca1c.zip/node_modules/ws/",\
+        ["npm:8.8.1", {\
+          "packageLocation": "./.yarn/cache/ws-npm-8.8.1-955e8c9f58-2152cf862c.zip/node_modules/ws/",\
           "packageDependencies": [\
-            ["ws", "npm:8.8.0"]\
+            ["ws", "npm:8.8.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:f93190cd66e7db48d4befca4103220c586e3868f37c96637f881356d80ee864fac4dbc4ee6d3433ba27338667b5a12dd57483214b2505e3564ace14eeb5e44e4#npm:8.8.0", {\
-          "packageLocation": "./.yarn/__virtual__/ws-virtual-acc5e99e25/0/cache/ws-npm-8.8.0-89e1c83090-6ceed1ca1c.zip/node_modules/ws/",\
+        ["virtual:649a1521d4342684979fd1d903a1ef84f1966310e8f5780490c975e47fac0f1fb99436d1b31e6d886c0a2873359b71620e36bfa468115e74adc26cb9d376623c#npm:8.8.1", {\
+          "packageLocation": "./.yarn/__virtual__/ws-virtual-5644ffbe0f/0/cache/ws-npm-8.8.1-955e8c9f58-2152cf862c.zip/node_modules/ws/",\
           "packageDependencies": [\
-            ["ws", "virtual:f93190cd66e7db48d4befca4103220c586e3868f37c96637f881356d80ee864fac4dbc4ee6d3433ba27338667b5a12dd57483214b2505e3564ace14eeb5e44e4#npm:8.8.0"],\
+            ["ws", "virtual:649a1521d4342684979fd1d903a1ef84f1966310e8f5780490c975e47fac0f1fb99436d1b31e6d886c0a2873359b71620e36bfa468115e74adc26cb9d376623c#npm:8.8.1"],\
             ["@types/bufferutil", null],\
             ["@types/utf-8-validate", null],\
             ["bufferutil", null],\

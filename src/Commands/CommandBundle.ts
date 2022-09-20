@@ -10,6 +10,7 @@ import WarnCheck from './WarnCheck.js';
 import WarnRemove from './WarnRemove.js';
 import WarnReset from './WarnReset.js';
 import WarnSet from './WarnSet.js';
+import ServerConfig from './ServerConfig.js';
 
 const CommandBundle: ICommand[] = [
   Ban,
@@ -23,6 +24,7 @@ const CommandBundle: ICommand[] = [
   WarnRemove,
   WarnReset,
   WarnSet,
+  ServerConfig,
 ];
 
 export default CommandBundle;
