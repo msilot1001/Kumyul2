@@ -1,11 +1,11 @@
 import {
   Message,
-  BaseCommandInteraction,
-  Permissions,
+  CommandInteraction,
   CommandInteractionOptionResolver,
-  MessageEmbed,
+  EmbedBuilder,
+  SlashCommandBuilder,
+  PermissionsBitField,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 
@@ -36,7 +36,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     if (!interaction.guild) return;
     if (!interaction.member) return;
 
@@ -44,7 +44,7 @@ const command: ICommand = {
     const perm = interaction.member?.permissions;
 
     // 관리자 권한 확인
-    if (!(perm as Permissions).toArray().includes('BAN_MEMBERS')) {
+    if (!(perm as PermissionsBitField).toArray().includes('BanMembers')) {
       interaction.reply({
         content: '이 명령어를 실행하려면 멤버 차단하기 권한이 필요해요!',
         ephemeral: true,
@@ -72,10 +72,10 @@ const command: ICommand = {
           member
             .ban({
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              days: date!,
+              deleteMessageDays: date!,
             })
             .then(async () => {
-              const newembed = new MessageEmbed()
+              const newembed = new EmbedBuilder()
                 .setColor('#CB7ACF')
                 .setTitle(
                   `${member.user.username}#${member.user.discriminator}님을 차단했습니다`,
@@ -103,11 +103,11 @@ const command: ICommand = {
         // 사유가 있으면
         member
           .ban({
-            days: date!,
+            deleteMessageDays: date!,
             reason,
           })
           .then(async () => {
-            const newembed = new MessageEmbed()
+            const newembed = new EmbedBuilder()
               .setColor('#CB7ACF')
               .setTitle(
                 `${member.user.username}#${member.user.discriminator}님을 차단했습니다`,

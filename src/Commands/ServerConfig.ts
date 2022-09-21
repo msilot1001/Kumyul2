@@ -3,15 +3,17 @@
 
 import {
   Message,
-  BaseCommandInteraction,
-  MessageEmbed,
-  MessageActionRow,
-  BaseMessageComponentOptions,
-  MessageActionRowOptions,
-  MessageButton,
+  CommandInteraction,
   MessageComponentInteraction,
+  SlashCommandBuilder,
+  ButtonStyle,
+  ComponentType,
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  InteractionResponse,
+  InteractionReplyOptions,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { v1 } from 'uuid';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
@@ -29,13 +31,13 @@ import OutMsgConfig from '../ConfigAssets/OutMsgConfig.js';
 
 // #region Pages
 const PageTemplate = (
-  interaction: BaseCommandInteraction,
+  interaction: CommandInteraction,
   guildData: GuildClass,
   uuid: string,
 ) => {
   const page: ConfigPage = {
     name: 'main',
-    embed: new MessageEmbed()
+    embed: new EmbedBuilder()
       .setColor(color)
       .setAuthor({ name: '시덱이', iconURL: url })
       .setTitle(`${interaction.guild!.name}의 서버 설정`)
@@ -50,36 +52,36 @@ const PageTemplate = (
         { name: '멤버 설정', value: '멤버 관리 설정' },
       ),
     components: [
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setLabel('일반 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.ordinary`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('입/퇴장 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.inout`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('경고 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.warn`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('공지 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.notice`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('레벨링 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.level`),
       ),
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setLabel('티켓 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.ticket`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('멤버 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.member`),
       ),
     ],
@@ -89,14 +91,14 @@ const PageTemplate = (
 };
 
 // const PageList: ((
-//   interaction: BaseCommandInteraction,
+//   interaction: CommandInteraction,
 //   guildData: GuildClass,
 //   uuid: string,
 // ) => Promise<ConfigPage>)[] = [MainPage, OrdinaryPage, InOutPage];
 
 const PageList = new Map<
   string,
-  (interaction: BaseCommandInteraction, uuid: string) => Promise<ConfigPage>
+  (interaction: CommandInteraction, uuid: string) => Promise<ConfigPage>
 >();
 PageList.set('main', MainPage);
 PageList.set('ordinary', OrdinaryPage);
@@ -105,10 +107,10 @@ PageList.set('inout', InOutPage);
 const ExecuteList = new Map<
   string,
   (
-    interaction: BaseCommandInteraction,
+    interaction: CommandInteraction,
     uuid: string,
   ) => Promise<
-    (interaction1: BaseCommandInteraction, uuid1: string) => Promise<ConfigPage>
+    (interaction1: CommandInteraction, uuid1: string) => Promise<ConfigPage>
   >
 >();
 ExecuteList.set('syschconfig', SysChConfig);
@@ -129,7 +131,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     const channel = interaction.channel;
     const guild = interaction.guild;
 
@@ -158,7 +160,8 @@ const command: ICommand = {
 
     const page = PageList.get(pagename);
 
-    let replymsg: Message;
+    let replymsg: Message | undefined;
+    let replyinteraction: InteractionResponse<boolean> | undefined;
 
     // 메인페이지 전송
     if (page) {
@@ -166,7 +169,7 @@ const command: ICommand = {
         embeds: [(await page(interaction, uuid)).embed],
         components: (await page(interaction, uuid)).components,
         fetchReply: true,
-      })) as Message;
+      })) as Message<boolean>;
     }
 
     const prefix = `cdec.${uuid}.config.`;
@@ -179,7 +182,7 @@ const command: ICommand = {
     // 컴포넌트 콜렉터 생성
     const collector = interaction.channel.createMessageComponentCollector({
       filter,
-      componentType: 'BUTTON',
+      componentType: ComponentType.Button,
     });
 
     collector.on('collect', async i => {
@@ -198,7 +201,7 @@ const command: ICommand = {
         const execute = ExecuteList.get(code);
 
         if (execute) {
-          await replymsg.delete();
+          if (replymsg) await replymsg.delete();
 
           // execute 하기
           const returnpage = await execute(interaction, uuid);
@@ -215,7 +218,7 @@ const command: ICommand = {
 
         // 메인페이지 전송
         if (executepage) {
-          await replymsg.delete();
+          if (replymsg) await replymsg.delete();
 
           logger.info('send return page');
 

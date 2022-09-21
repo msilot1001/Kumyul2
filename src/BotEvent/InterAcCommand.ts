@@ -1,8 +1,7 @@
-import { BaseCommandInteraction } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import CommandBundle from '../Commands/CommandBundle.js';
-import logger from '../Utils/Logger.js';
 
-async function InterAcCommand(interaction: BaseCommandInteraction) {
+async function InterAcCommand(interaction: CommandInteraction) {
   // 커맨드번들에서 찾기
   const command = CommandBundle.find(
     value => value.Builder.name === interaction.commandName,

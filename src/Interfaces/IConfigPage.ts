@@ -1,15 +1,7 @@
-import {
-  BaseMessageComponentOptions,
-  MessageActionRow,
-  MessageActionRowOptions,
-  MessageEmbed,
-} from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from 'discord.js';
 
 export default interface ConfigPage {
   name: string;
-  embed: MessageEmbed;
-  components?: (
-    | MessageActionRow
-    | (Required<BaseMessageComponentOptions> & MessageActionRowOptions)
-  )[];
+  embed: EmbedBuilder;
+  components: ActionRowBuilder<ButtonBuilder>[];
 }

@@ -1,8 +1,9 @@
 import {
   ButtonInteraction,
-  MessageEmbed,
-  MessageActionRow,
-  MessageButton,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
 } from 'discord.js';
 import { url } from '../Config/EmbedConfig.js';
 import { VoteModel } from '../Database/VoteSchema.js';
@@ -20,23 +21,23 @@ async function InterAcButton(interaction: ButtonInteraction) {
     if (!res) return;
 
     // value
-    let embed: MessageEmbed;
+    let embed: EmbedBuilder;
 
     const color = '#46b950';
 
-    const buttons = new MessageActionRow().addComponents(
-      new MessageButton()
+    const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      new ButtonBuilder()
         .setCustomId(`cdvo.${id}_agree`)
         .setLabel('👍')
-        .setStyle('SUCCESS'),
-      new MessageButton()
+        .setStyle(ButtonStyle.Success),
+      new ButtonBuilder()
         .setCustomId(`cdvo.${id}_disagree`)
         .setLabel('👎')
-        .setStyle('DANGER'),
-      new MessageButton()
+        .setStyle(ButtonStyle.Danger),
+      new ButtonBuilder()
         .setCustomId(`cdvo.${id}_lock`)
         .setLabel('🔒')
-        .setStyle('SECONDARY'),
+        .setStyle(ButtonStyle.Secondary),
     );
 
     // 락 버튼
@@ -52,7 +53,7 @@ async function InterAcButton(interaction: ButtonInteraction) {
 
       await VoteModel.deleteOne({ id });
 
-      embed = new MessageEmbed()
+      embed = new EmbedBuilder()
         .setColor('#5f7b9b')
         .setAuthor({ name: '시덱이', iconURL: url })
         .setTitle(`[종료됨] ${res.topic}`)
@@ -106,7 +107,7 @@ async function InterAcButton(interaction: ButtonInteraction) {
       res.uservoted.set(interaction.user.id, false);
     }
 
-    embed = new MessageEmbed()
+    embed = new EmbedBuilder()
       .setColor(color)
       .setAuthor({ name: '시덱이', iconURL: url })
       .setTitle(res.topic)

@@ -1,10 +1,10 @@
 import {
   Message,
-  BaseCommandInteraction,
+  CommandInteraction,
   CommandInteractionOptionResolver,
-  Permissions,
+  PermissionsBitField,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { embedtemp } from '../Config/EmbedConfig.js';
@@ -26,7 +26,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     const target = interaction.options.getUser('유저') || interaction.user;
     const amount =
       (interaction.options as CommandInteractionOptionResolver).getInteger(
@@ -39,9 +39,9 @@ const command: ICommand = {
     }
     // 권한 체크
     if (
-      !(interaction.member?.permissions as Permissions)
+      !(interaction.member?.permissions as PermissionsBitField)
         .toArray()
-        .includes('BAN_MEMBERS')
+        .includes('BanMembers')
     ) {
       interaction.reply({
         content:

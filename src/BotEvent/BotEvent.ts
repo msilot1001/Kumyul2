@@ -3,17 +3,20 @@
 // 임포트
 import {
   Client,
-  Intents,
+  GatewayIntentBits,
   Message,
+  Partials,
   ActivityOptions,
   Interaction,
+  ActivityType,
 } from 'discord.js';
 import logger from '../Utils/Logger.js';
 import InterAcRecvFunc from './InterAcRecv.js';
 import MsgRecvFunc from './MsgRecv.js';
 
 export const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+  partials: [Partials.Channel],
 });
 
 // #endregion
@@ -39,22 +42,22 @@ export async function Start() {
 
     // List 갱신
     activitylist = [
-      { name: '욕설', type: 'LISTENING' },
+      { name: '욕설', type: ActivityType.Listening },
       {
         name: '닝겐들 명령',
-        type: 'LISTENING',
+        type: ActivityType.Listening,
       },
-      { name: '너님의 명령', type: 'LISTENING' },
-      { name: '욕설을 검열', type: 'LISTENING' },
-      { name: '시덱인 귀여웡 이라고', type: 'LISTENING' },
-      { name: '당신네 서버에서 검열놀이', type: 'LISTENING' },
-      { name: `${client.guilds.cache.size}`, type: 'PLAYING' },
+      { name: '너님의 명령', type: ActivityType.Listening },
+      { name: '욕설을 검열', type: ActivityType.Listening },
+      { name: '시덱인 귀여웡 이라고', type: ActivityType.Listening },
+      { name: '당신네 서버에서 검열놀이', type: ActivityType.Listening },
+      { name: `${client.guilds.cache.size}`, type: ActivityType.Playing },
       {
         name: `${client.guilds.cache.reduce(
           (a, g) => a + g.memberCount,
           0,
         )}명의 닝겐들과 함께`,
-        type: 'PLAYING',
+        type: ActivityType.Playing,
       },
     ];
 

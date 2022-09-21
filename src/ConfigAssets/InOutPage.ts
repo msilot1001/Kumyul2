@@ -1,15 +1,16 @@
 import {
-  BaseCommandInteraction,
-  MessageEmbed,
-  MessageActionRow,
-  MessageButton,
+  CommandInteraction,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
   Role,
+  ButtonStyle,
 } from 'discord.js';
 import { color, url } from '../Config/EmbedConfig.js';
-import { GuildClass, GuildModel } from '../Database/GuildSchema.js';
+import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 
-const InOutPage = async (interaction: BaseCommandInteraction, uuid: string) => {
+const InOutPage = async (interaction: CommandInteraction, uuid: string) => {
   const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
   const userautorole = guildData?.userautorole;
   const botautorole = guildData?.botautorole;
@@ -28,7 +29,7 @@ const InOutPage = async (interaction: BaseCommandInteraction, uuid: string) => {
 
   const page: ConfigPage = {
     name: 'inout',
-    embed: new MessageEmbed()
+    embed: new EmbedBuilder()
       .setColor(color)
       .setAuthor({ name: '시덱이', iconURL: url })
       .setTitle('입/퇴장 설정')
@@ -52,29 +53,29 @@ const InOutPage = async (interaction: BaseCommandInteraction, uuid: string) => {
         },
       ),
     components: [
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setLabel('유저 자동 역할 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.execute.userroleconfig`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('봇 자동 역할 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.execute.botroleconfig`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('입장 메세지 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.execute.inmsgconfig`),
-        new MessageButton()
+        new ButtonBuilder()
           .setLabel('퇴장 메세지 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.execute.outmsgconfig`),
       ),
 
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setLabel('뒤로가기')
-          .setStyle('DANGER')
+          .setStyle(ButtonStyle.Danger)
           .setCustomId(`cdec.${uuid}.config.main`),
       ),
     ],

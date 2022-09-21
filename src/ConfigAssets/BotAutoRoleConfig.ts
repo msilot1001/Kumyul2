@@ -1,16 +1,16 @@
-import { BaseCommandInteraction, Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import { GuildClass, GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 import InOutPage from './InOutPage.js';
 
 const BotAutoRoleConfig = (
-  interaction: BaseCommandInteraction,
+  interaction: CommandInteraction,
   uuid: string,
 ): Promise<
-  (interaction1: BaseCommandInteraction, uuid1: string) => Promise<ConfigPage>
+  (interaction1: CommandInteraction, uuid1: string) => Promise<ConfigPage>
 > =>
   new Promise<
-    (interaction2: BaseCommandInteraction, uuid2: string) => Promise<ConfigPage>
+    (interaction2: CommandInteraction, uuid2: string) => Promise<ConfigPage>
   >(async (resolve, reject) => {
     const parentPage = InOutPage;
 

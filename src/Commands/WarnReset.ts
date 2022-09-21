@@ -1,5 +1,9 @@
-import { Message, BaseCommandInteraction, Permissions } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import {
+  Message,
+  CommandInteraction,
+  PermissionsBitField,
+  SlashCommandBuilder,
+} from 'discord.js';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { GuildModel } from '../Database/GuildSchema.js';
@@ -15,7 +19,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     const target = interaction.options.getUser('대상') || interaction.user;
 
     // 길드 없는지 체크
@@ -25,9 +29,9 @@ const command: ICommand = {
 
     // 권한 체크
     if (
-      !(interaction.member?.permissions as Permissions)
+      !(interaction.member?.permissions as PermissionsBitField)
         .toArray()
-        .includes('BAN_MEMBERS')
+        .includes('BanMembers')
     ) {
       interaction.reply({
         content:

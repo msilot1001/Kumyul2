@@ -1,5 +1,4 @@
-import { Message, BaseCommandInteraction } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { Message, CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { GuildModel } from '../Database/GuildSchema.js';
@@ -15,7 +14,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     const target = interaction.options.getUser('대상') || interaction.user;
 
     // 길드 없는지 체크

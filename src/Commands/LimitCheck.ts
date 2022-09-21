@@ -1,5 +1,4 @@
-import { Message, BaseCommandInteraction } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { Message, CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { GuildModel } from '../Database/GuildSchema.js';
@@ -11,7 +10,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     // #region 지옥같은 널체크 시작
     if (!interaction.guild) {
       interaction.reply({

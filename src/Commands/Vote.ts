@@ -1,13 +1,14 @@
 import {
   Message,
-  BaseCommandInteraction,
+  CommandInteraction,
   CommandInteractionOptionResolver,
-  Permissions,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  PermissionsBitField,
+  SlashCommandBuilder,
+  ButtonStyle,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { v4 } from 'uuid';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
@@ -27,7 +28,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     if (!interaction.guild) return;
     if (!interaction.member) return;
 
@@ -42,9 +43,9 @@ const command: ICommand = {
     if (!topic) return;
 
     if (
-      !(interaction.member?.permissions as Permissions)
+      !(interaction.member?.permissions as PermissionsBitField)
         .toArray()
-        .includes('MANAGE_GUILD')
+        .includes('ManageGuild')
     ) {
       interaction.reply({
         content: '이 명령어를 실행하려면 서버 관리하기 권한이 필요해요!',
@@ -57,7 +58,7 @@ const command: ICommand = {
     const id = `${v4()}`;
 
     try {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor('#46b950')
         .setAuthor({ name: '시덱이', iconURL: url })
         .setTitle(topic)
@@ -70,19 +71,19 @@ const command: ICommand = {
           text: `${interaction.user.username}#${interaction.user.discriminator}님이 시작했어요!`,
         });
 
-      const buttons = new MessageActionRow().addComponents(
-        new MessageButton()
+      const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setCustomId(`cdvo.${id}_agree`)
           .setLabel('👍')
-          .setStyle('SUCCESS'),
-        new MessageButton()
+          .setStyle(ButtonStyle.Success),
+        new ButtonBuilder()
           .setCustomId(`cdvo.${id}_disagree`)
           .setLabel('👎')
-          .setStyle('DANGER'),
-        new MessageButton()
+          .setStyle(ButtonStyle.Danger),
+        new ButtonBuilder()
           .setCustomId(`cdvo.${id}_lock`)
           .setLabel('🔒')
-          .setStyle('SECONDARY'),
+          .setStyle(ButtonStyle.Secondary),
       );
 
       const msg = await interaction.channel!.send({

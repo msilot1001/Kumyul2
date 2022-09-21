@@ -1,10 +1,10 @@
 import {
   Message,
-  BaseCommandInteraction,
+  CommandInteraction,
   CommandInteractionOptionResolver,
-  Permissions,
+  SlashCommandBuilder,
+  PermissionsBitField,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { GuildModel } from '../Database/GuildSchema.js';
@@ -22,7 +22,7 @@ const command: ICommand = {
   MsgExecute: async (msg: Message) => {
     logger.info('MsgExecute');
   },
-  SlashExecute: async (interaction: BaseCommandInteraction) => {
+  SlashExecute: async (interaction: CommandInteraction) => {
     const limit = (
       interaction.options as CommandInteractionOptionResolver
     ).getInteger('한도');
@@ -43,9 +43,9 @@ const command: ICommand = {
 
     // 권한 잇는지 체크
     if (
-      !(interaction.member?.permissions as Permissions)
+      !(interaction.member?.permissions as PermissionsBitField)
         .toArray()
-        .includes('MANAGE_GUILD')
+        .includes('ManageGuild')
     ) {
       interaction.reply({
         content: '이 명령어를 실행하려면 서버 관리 기능이 필요해요!',

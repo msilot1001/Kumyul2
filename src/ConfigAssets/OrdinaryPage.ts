@@ -1,17 +1,16 @@
 import {
-  BaseCommandInteraction,
-  MessageEmbed,
-  MessageActionRow,
-  MessageButton,
+  CommandInteraction,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType,
 } from 'discord.js';
 import { color, url } from '../Config/EmbedConfig.js';
 import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 
-const OrdinaryPage = async (
-  interaction: BaseCommandInteraction,
-  uuid: string,
-) => {
+const OrdinaryPage = async (interaction: CommandInteraction, uuid: string) => {
   const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
 
   let sysnoticechannel: string | undefined = guildData?.sysnoticechannel;
@@ -30,7 +29,7 @@ const OrdinaryPage = async (
 
             channels.forEach(channel => {
               if (isended) return;
-              if (channel.isText()) {
+              if (channel.type === ChannelType.GuildText) {
                 isended = true;
                 sysnoticechannel = channel.id;
               }
@@ -48,7 +47,7 @@ const OrdinaryPage = async (
 
       channels.forEach(channel => {
         if (isended) return;
-        if (channel.isText()) {
+        if (channel.type === ChannelType.GuildText) {
           isended = true;
           sysnoticechannel = channel.id;
         }
@@ -58,7 +57,7 @@ const OrdinaryPage = async (
 
   const page: ConfigPage = {
     name: 'ordinary',
-    embed: new MessageEmbed()
+    embed: new EmbedBuilder()
       .setColor(color)
       .setAuthor({ name: '시덱이', iconURL: url })
       .setTitle('일반 설정')
@@ -68,16 +67,16 @@ const OrdinaryPage = async (
         value: sysnoticechannel ? `<#${sysnoticechannel}>` : '미정',
       }),
     components: [
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setLabel('시스템 공지 채널 설정')
-          .setStyle('PRIMARY')
+          .setStyle(ButtonStyle.Primary)
           .setCustomId(`cdec.${uuid}.config.execute.syschconfig`),
       ),
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
           .setLabel('뒤로가기')
-          .setStyle('DANGER')
+          .setStyle(ButtonStyle.Danger)
           .setCustomId(`cdec.${uuid}.config.main`),
       ),
     ],
