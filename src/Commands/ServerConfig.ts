@@ -12,7 +12,7 @@ import {
   ButtonBuilder,
   EmbedBuilder,
   InteractionResponse,
-  InteractionReplyOptions,
+  BaseInteraction,
 } from 'discord.js';
 import { v1 } from 'uuid';
 import ICommand from '../Interfaces/ICommand.js';
@@ -30,11 +30,7 @@ import SysChConfig from '../ConfigAssets/SysChConfig.js';
 import OutMsgConfig from '../ConfigAssets/OutMsgConfig.js';
 
 // #region Pages
-const PageTemplate = (
-  interaction: CommandInteraction,
-  guildData: GuildClass,
-  uuid: string,
-) => {
+const PageTemplate = (interaction: BaseInteraction, uuid: string) => {
   const page: ConfigPage = {
     name: 'main',
     embed: new EmbedBuilder()
@@ -98,7 +94,7 @@ const PageTemplate = (
 
 const PageList = new Map<
   string,
-  (interaction: CommandInteraction, uuid: string) => Promise<ConfigPage>
+  (interaction: BaseInteraction, uuid: string) => Promise<ConfigPage>
 >();
 PageList.set('main', MainPage);
 PageList.set('ordinary', OrdinaryPage);
@@ -107,10 +103,10 @@ PageList.set('inout', InOutPage);
 const ExecuteList = new Map<
   string,
   (
-    interaction: CommandInteraction,
+    interaction: BaseInteraction,
     uuid: string,
   ) => Promise<
-    (interaction1: CommandInteraction, uuid1: string) => Promise<ConfigPage>
+    (interaction1: BaseInteraction, uuid1: string) => Promise<ConfigPage>
   >
 >();
 ExecuteList.set('syschconfig', SysChConfig);
@@ -204,13 +200,13 @@ const command: ICommand = {
           if (replymsg) await replymsg.delete();
 
           // execute 하기
-          const returnpage = await execute(interaction, uuid);
+          const returnpage = await execute(i, uuid);
 
           logger.info('send execute end page');
 
           replymsg = await channel.send({
-            embeds: [(await returnpage(interaction, uuid)).embed],
-            components: (await returnpage(interaction, uuid)).components,
+            embeds: [(await returnpage(i, uuid)).embed],
+            components: (await returnpage(i, uuid)).components,
           });
         }
       } else {
@@ -223,8 +219,8 @@ const command: ICommand = {
           logger.info('send return page');
 
           replymsg = (await i.reply({
-            embeds: [(await executepage(interaction, uuid)).embed],
-            components: (await executepage(interaction, uuid)).components,
+            embeds: [(await executepage(i, uuid)).embed],
+            components: (await executepage(i, uuid)).components,
             fetchReply: true,
           })) as Message<boolean>;
         } else {

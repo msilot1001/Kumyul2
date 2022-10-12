@@ -1,5 +1,5 @@
 import {
-  CommandInteraction,
+  BaseInteraction,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
@@ -10,7 +10,7 @@ import { color, url } from '../Config/EmbedConfig.js';
 import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 
-const InOutPage = async (interaction: CommandInteraction, uuid: string) => {
+const InOutPage = async (interaction: BaseInteraction, uuid: string) => {
   const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
   const userautorole = guildData?.userautorole;
   const botautorole = guildData?.botautorole;

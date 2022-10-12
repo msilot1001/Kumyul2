@@ -1,4 +1,4 @@
-import { ChannelType, Guild } from 'discord.js';
+import { ChannelType, Guild, TextChannel } from 'discord.js';
 import { embedtemp } from '../Config/EmbedConfig.js';
 import { GuildModel } from '../Database/GuildSchema.js';
 import logger from '../Utils/Logger.js';
@@ -14,7 +14,7 @@ export default function GuildAdd(guild: Guild) {
 
     channels.forEach(channel => {
       if (isended) return;
-      if (channel.type === ChannelType.GuildText) {
+      if (channel!.type === ChannelType.GuildText) {
         const embed = embedtemp;
         embed
           .setTitle('시덱이를 초대해주셔서 감사합니다!')
@@ -36,7 +36,7 @@ export default function GuildAdd(guild: Guild) {
             },
           );
 
-        channel.send({ embeds: [embed] });
+        (channel as TextChannel).send({ embeds: [embed] });
 
         // 이미 등록되어있는지 확인
 

@@ -1,16 +1,16 @@
-import { CommandInteraction, Message } from 'discord.js';
+import { BaseInteraction, Message } from 'discord.js';
 import { GuildClass, GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 import InOutPage from './InOutPage.js';
 
 const InOutUserRoleConfig = (
-  interaction: CommandInteraction,
+  interaction: BaseInteraction,
   uuid: string,
 ): Promise<
-  (interaction1: CommandInteraction, uuid1: string) => Promise<ConfigPage>
+  (interaction1: BaseInteraction, uuid1: string) => Promise<ConfigPage>
 > =>
   new Promise<
-    (interaction2: CommandInteraction, uuid2: string) => Promise<ConfigPage>
+    (interaction2: BaseInteraction, uuid2: string) => Promise<ConfigPage>
   >(async (resolve, reject) => {
     const parentPage = InOutPage;
 

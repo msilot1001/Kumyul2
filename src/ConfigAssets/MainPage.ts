@@ -1,5 +1,5 @@
 import {
-  CommandInteraction,
+  BaseInteraction,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
@@ -8,7 +8,7 @@ import {
 import { color, url } from '../Config/EmbedConfig.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 
-const MainPage = async (interaction: CommandInteraction, uuid: string) => {
+const MainPage = async (interaction: BaseInteraction, uuid: string) => {
   const page: ConfigPage = {
     name: 'main',
     embed: new EmbedBuilder()

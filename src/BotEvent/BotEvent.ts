@@ -8,7 +8,7 @@ import {
   Partials,
   ActivityOptions,
   Interaction,
-  ActivityType,
+  ActivityType
 } from 'discord.js';
 import logger from '../Utils/Logger.js';
 import InterAcRecvFunc from './InterAcRecv.js';

@@ -1,8 +1,9 @@
 {
+  "files": ["src/**/*.ts"],
   "compilerOptions": {
-    "target": "es2020",
+    "target": "ES6",
     "module": "esnext",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,

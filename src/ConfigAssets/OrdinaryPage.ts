@@ -1,5 +1,5 @@
 import {
-  CommandInteraction,
+  BaseInteraction,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
@@ -10,7 +10,7 @@ import { color, url } from '../Config/EmbedConfig.js';
 import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
 
-const OrdinaryPage = async (interaction: CommandInteraction, uuid: string) => {
+const OrdinaryPage = async (interaction: BaseInteraction, uuid: string) => {
   const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
 
   let sysnoticechannel: string | undefined = guildData?.sysnoticechannel;
@@ -29,9 +29,9 @@ const OrdinaryPage = async (interaction: CommandInteraction, uuid: string) => {
 
             channels.forEach(channel => {
               if (isended) return;
-              if (channel.type === ChannelType.GuildText) {
+              if (channel!.type === ChannelType.GuildText) {
                 isended = true;
-                sysnoticechannel = channel.id;
+                sysnoticechannel = channel!.id;
               }
             });
           });
@@ -47,9 +47,9 @@ const OrdinaryPage = async (interaction: CommandInteraction, uuid: string) => {
 
       channels.forEach(channel => {
         if (isended) return;
-        if (channel.type === ChannelType.GuildText) {
+        if (channel!.type === ChannelType.GuildText) {
           isended = true;
-          sysnoticechannel = channel.id;
+          sysnoticechannel = channel!.id;
         }
       });
     });
