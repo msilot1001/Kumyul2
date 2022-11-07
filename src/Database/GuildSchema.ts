@@ -26,13 +26,6 @@ export class GuildClass {
   @prop()
   noticechannel?: string;
 
-  // 환영 메세지
-  @prop()
-  greetmsg?: string;
-
-  @prop()
-  exitmsg?: string;
-
   @prop({ ref: () => TicketClass })
   ticketlist?: Ref<TicketClass>;
 
@@ -40,17 +33,21 @@ export class GuildClass {
   @prop()
   userlevels?: Map<string, number>;
 
+  // title, desc 형식
   @prop()
-  inmsg?: string;
+  inmsg?: string[];
 
   @prop()
-  outmsg?: string;
+  outmsg?: string[];
 
   @prop()
   userautorole?: string;
 
   @prop()
   botautorole?: string;
+
+  @prop()
+  inoutmsgchannel?: string;
 }
 
 export const GuildModel = getModelForClass(GuildClass);

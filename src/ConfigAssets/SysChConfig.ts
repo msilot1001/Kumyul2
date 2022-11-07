@@ -1,7 +1,9 @@
 import { ChannelType, BaseInteraction, Message } from 'discord.js';
+import { inspect } from 'util';
 import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
-import OrdinaryPage from './OrdinaryPage.js';
+import { OrdinaryPage } from './index.js';
+import logger from '../Utils/Logger.js';
 
 const SysChConfig = (
   interaction: BaseInteraction,
@@ -26,6 +28,8 @@ const SysChConfig = (
     );
 
     collector!.on('collect', async (msg: Message) => {
+      logger.info(inspect(msg));
+
       if (msg.content === 'ㅁ취소') {
         // 부모페이지 전송
         if (infoMsg) {

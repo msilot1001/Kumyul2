@@ -15,10 +15,5 @@ export function clean() {
 }
 
 export default () => {
-  return tsProject
-    .src()
-    .pipe(tsProject())
-    .js.pipe(uglify())
-    .pipe(concat('main.min.js'))
-    .pipe(dest('minify'));
+  return tsProject.src().pipe(tsProject()).js.pipe(dest('dist'));
 };

@@ -1,34 +1,44 @@
 // 모듈 로드
-import { Message, Interaction, Guild } from 'discord.js';
+import { Message, Interaction, Guild, GuildMember } from 'discord.js';
 import * as dotenv from 'dotenv';
-import * as BotEvent from './BotEvent/BotEvent.js';
+import {
+  client,
+  Start,
+  MsgRecv,
+  InterAcRecv,
+  GuildAdd,
+  GuildMemberAdd,
+} from './BotEvent/index.js';
 import { LoadConfig } from './Config/ConfigManager.js';
 import { Connect } from './Database/DBManager.js';
-import GuildAdd from './BotEvent/GuildAdd.js';
 
 // .env 로딩
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 LoadConfig().then(async () => {
   await Connect();
 
-  const cli = BotEvent.client;
+  client.once('ready', () => Start());
 
-  cli.once('ready', () => BotEvent.Start());
-
-  cli.on('messageCreate', async (msg: Message) => {
-    BotEvent.MsgRecv(msg);
+  client.on('messageCreate', async (msg: Message) => {
+    MsgRecv(msg);
   });
 
-  cli.on('interactionCreate', async (interaction: Interaction) => {
-    BotEvent.InterAcRecv(interaction);
+  client.on('interactionCreate', async (interaction: Interaction) => {
+    InterAcRecv(interaction);
   });
 
-  cli.on('guildCreate', async (guild: Guild) => {
+  client.on('guildCreate', async (guild: Guild) => {
     GuildAdd(guild);
   });
 
-  cli.login(
+  client.on('guildMemberAdd', async (member: GuildMember) => {
+    GuildMemberAdd(member);
+  });
+
+  client.login(
     process.env.NODE_ENV === 'production'
       ? process.env.TOKEN
       : process.env.TESTTOKEN,

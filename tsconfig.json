@@ -1,5 +1,5 @@
 {
-  "files": ["src/**/*.ts"],
+  "include": ["src"],
   "compilerOptions": {
     "target": "ES6",
     "module": "esnext",
@@ -12,6 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "removeComments": true
   }
 }

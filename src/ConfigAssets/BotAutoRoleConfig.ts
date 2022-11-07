@@ -1,7 +1,7 @@
 import { BaseInteraction, Message } from 'discord.js';
 import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
-import InOutPage from './InOutPage.js';
+import { InOutPage } from './index.js';
 
 const BotAutoRoleConfig = (
   interaction: BaseInteraction,

@@ -1,6 +1,9 @@
 {
   "name": "kumyul2",
+  "version": "2.0.0",
+  "type": "module",
   "packageManager": "yarn@3.2.2",
+  "license": "GNU General Public License version 3 (GPL-3.0)",
   "dependencies": {
     "@discordjs/rest": "^0.4.1",
     "@typegoose/typegoose": "^9.9.0",
@@ -15,6 +18,11 @@
     "discord.js": "14.5.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
     "mongoose": "^6.3.5",
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
@@ -36,13 +44,14 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-typescript": "^6.0.0-alpha.1",
-    "gulp-uglify": "^3.0.2",
     "prettier": "latest",
     "ts-node": "^10.9.1",
     "typescript": "4.7.4"
+  },
+  "scripts": {
+    "build": "yarn gulp",
+    "start": "yarn node dist/index.js",
+    "buildstart": "yarn gulp clean && yarn gulp && yarn node dist/index.js",
+    "deploy": "yarn gulp clean && yarn gulp && yarn node dist/deploy-commands.js"
   }
 }

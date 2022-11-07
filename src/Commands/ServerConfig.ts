@@ -18,16 +18,18 @@ import { v1 } from 'uuid';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { color, url } from '../Config/EmbedConfig.js';
-import { GuildClass, GuildModel } from '../Database/GuildSchema.js';
+import { GuildModel } from '../Database/GuildSchema.js';
 import ConfigPage from '../Interfaces/IConfigPage.js';
-import MainPage from '../ConfigAssets/MainPage.js';
-import OrdinaryPage from '../ConfigAssets/OrdinaryPage.js';
-import InOutPage from '../ConfigAssets/InOutPage.js';
-import BotAutoRoleConfig from '../ConfigAssets/BotAutoRoleConfig.js';
-import InMsgConfig from '../ConfigAssets/InMsgConfig.js';
-import UserAutoRoleConfig from '../ConfigAssets/UserAutoRoleConfig.js';
-import SysChConfig from '../ConfigAssets/SysChConfig.js';
-import OutMsgConfig from '../ConfigAssets/OutMsgConfig.js';
+import {
+  BotAutoRoleConfig,
+  InMsgConfig,
+  InOutPage,
+  MainPage,
+  OrdinaryPage,
+  OutMsgConfig,
+  SysChConfig,
+  UserAutoRoleConfig,
+} from '../ConfigAssets/index.js';
 
 // #region Pages
 const PageTemplate = (interaction: BaseInteraction, uuid: string) => {
@@ -136,98 +138,102 @@ const command: ICommand = {
 
     const uuid = v1();
 
-    logger.info(uuid);
+    try {
+      const guilddata = await GuildModel.findOne({ id: guild!.id });
 
-    const guilddata = await GuildModel.findOne({ id: guild!.id });
+      // 가입해 닝겐
+      if (!guilddata) {
+        interaction.reply({
+          content:
+            '이 길드는 시덱이 서비스에 등록되어있지 않아요! 관리자에게 요청해보세요!',
+          ephemeral: true,
+        });
 
-    // 가입해 닝겐
-    if (!guilddata) {
-      interaction.reply({
-        content:
-          '이 길드는 시덱이 서비스에 등록되어있지 않아요! 관리자에게 요청해보세요!',
-        ephemeral: true,
+        return;
+      }
+
+      // 페이지 구하기
+      const pagename = 'main';
+
+      const page = PageList.get(pagename);
+
+      let replymsg: Message | undefined;
+      let replyinteraction: InteractionResponse<boolean> | undefined;
+
+      // 메인페이지 전송
+      if (page) {
+        replymsg = (await interaction.reply({
+          embeds: [(await page(interaction, uuid)).embed],
+          components: (await page(interaction, uuid)).components,
+          fetchReply: true,
+        })) as Message<boolean>;
+      }
+
+      const prefix = `cdec.${uuid}.config.`;
+
+      // 콜렉터 필터
+      const filter = (i: MessageComponentInteraction) => {
+        return (
+          i.customId.startsWith(prefix) && i.user.id === interaction.user.id
+        );
+      };
+
+      // 컴포넌트 콜렉터 생성
+      const collector = interaction.channel.createMessageComponentCollector({
+        filter,
+        componentType: ComponentType.Button,
       });
 
-      return;
-    }
+      collector.on('collect', async i => {
+        const executecode = i.customId.substring(prefix.length);
+        logger.info(executecode);
 
-    // 페이지 구하기
-    const pagename = 'main';
+        // 설정창
+        if (executecode.startsWith('execute')) {
+          const code = executecode.substring(8);
 
-    const page = PageList.get(pagename);
+          if (!ExecuteList.has(code)) {
+            logger.info('Page Not Found 404');
+            return;
+          }
 
-    let replymsg: Message | undefined;
-    let replyinteraction: InteractionResponse<boolean> | undefined;
+          const execute = ExecuteList.get(code);
 
-    // 메인페이지 전송
-    if (page) {
-      replymsg = (await interaction.reply({
-        embeds: [(await page(interaction, uuid)).embed],
-        components: (await page(interaction, uuid)).components,
-        fetchReply: true,
-      })) as Message<boolean>;
-    }
+          if (execute) {
+            if (replymsg) await replymsg.delete();
 
-    const prefix = `cdec.${uuid}.config.`;
+            // execute 하기
+            const returnpage = await execute(i, uuid);
 
-    // 콜렉터 필터
-    const filter = (i: MessageComponentInteraction) => {
-      return i.customId.startsWith(prefix) && i.user.id === interaction.user.id;
-    };
+            logger.info('send execute end page');
 
-    // 컴포넌트 콜렉터 생성
-    const collector = interaction.channel.createMessageComponentCollector({
-      filter,
-      componentType: ComponentType.Button,
-    });
-
-    collector.on('collect', async i => {
-      const executecode = i.customId.substring(prefix.length);
-      logger.info(executecode);
-
-      // 설정창
-      if (executecode.startsWith('execute')) {
-        const code = executecode.substring(8);
-
-        if (!ExecuteList.has(code)) {
-          logger.info('Page Not Found 404');
-          return;
-        }
-
-        const execute = ExecuteList.get(code);
-
-        if (execute) {
-          if (replymsg) await replymsg.delete();
-
-          // execute 하기
-          const returnpage = await execute(i, uuid);
-
-          logger.info('send execute end page');
-
-          replymsg = await channel.send({
-            embeds: [(await returnpage(i, uuid)).embed],
-            components: (await returnpage(i, uuid)).components,
-          });
-        }
-      } else {
-        const executepage = PageList.get(executecode);
-
-        // 메인페이지 전송
-        if (executepage) {
-          if (replymsg) await replymsg.delete();
-
-          logger.info('send return page');
-
-          replymsg = (await i.reply({
-            embeds: [(await executepage(i, uuid)).embed],
-            components: (await executepage(i, uuid)).components,
-            fetchReply: true,
-          })) as Message<boolean>;
+            replymsg = await channel.send({
+              embeds: [(await returnpage(i, uuid)).embed],
+              components: (await returnpage(i, uuid)).components,
+            });
+          }
         } else {
-          logger.info('Page Not Found 404');
+          const executepage = PageList.get(executecode);
+
+          // 메인페이지 전송
+          if (executepage) {
+            if (replymsg) await replymsg.delete();
+
+            logger.info('send return page');
+
+            replymsg = (await i.reply({
+              embeds: [(await executepage(i, uuid)).embed],
+              components: (await executepage(i, uuid)).components,
+              fetchReply: true,
+            })) as Message<boolean>;
+          } else {
+            logger.info('Page Not Found 404');
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      logger.error(e);
+    }
   },
 };
 

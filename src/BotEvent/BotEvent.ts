@@ -5,18 +5,21 @@ import {
   Client,
   GatewayIntentBits,
   Message,
-  Partials,
   ActivityOptions,
   Interaction,
-  ActivityType
+  ActivityType,
 } from 'discord.js';
 import logger from '../Utils/Logger.js';
 import InterAcRecvFunc from './InterAcRecv.js';
 import MsgRecvFunc from './MsgRecv.js';
 
 export const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
-  partials: [Partials.Channel],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+  ],
 });
 
 // #endregion
@@ -42,15 +45,14 @@ export async function Start() {
 
     // List 갱신
     activitylist = [
-      { name: '욕설', type: ActivityType.Listening },
       {
         name: '닝겐들 명령',
         type: ActivityType.Listening,
       },
       { name: '너님의 명령', type: ActivityType.Listening },
-      { name: '욕설을 검열', type: ActivityType.Listening },
-      { name: '시덱인 귀여웡 이라고', type: ActivityType.Listening },
-      { name: '당신네 서버에서 검열놀이', type: ActivityType.Listening },
+      { name: '욕설을 검열', type: ActivityType.Playing },
+      { name: '시덱인 귀여웡 이라고', type: ActivityType.Playing },
+      { name: '당신네 서버에서 검열놀이', type: ActivityType.Playing },
       { name: `${client.guilds.cache.size}`, type: ActivityType.Playing },
       {
         name: `${client.guilds.cache.reduce(
@@ -72,6 +74,7 @@ export async function Start() {
  * 메세지 감지 함수임
  * @param msg 메세지
  */
+
 export async function MsgRecv(msg: Message) {
   MsgRecvFunc(msg);
 }

@@ -48,10 +48,12 @@ export default function GuildAdd(guild: Guild) {
             // 있으면 리턴
             if (foundguild !== null) return;
             // 없으면 생성
+
             GuildModel.create({
               id: guild.id,
               warnlimit: 10,
               customdetection: '{}',
+              inoutmsgchannel: guild.systemChannel || null,
             });
           });
 
