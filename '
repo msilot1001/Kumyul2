@@ -15,82 +15,86 @@ import ConfigPage from '../Interfaces/IConfigPage.js';
 import logger from '../Utils/Logger.js';
 
 const InOutPage = async (interaction: BaseInteraction, uuid: string) => {
-  // eslint-disable-next-line one-var
-  let userrole, botrole: Role | null | undefined;
-  let inmsg = '미정';
-  let outmsg = '미정';
-  let sendchannel: string | undefined;
+  try {
+    const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
+    const userautorole = guildData?.userautorole;
+    const botautorole = guildData?.botautorole;
 
-  const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
-  const userautorole = guildData?.userautorole;
-  const botautorole = guildData?.botautorole;
+    // eslint-disable-next-line one-var
+    let userrole, botrole: Role | null | undefined;
 
-  // 역할 불러오기
-  if (userautorole) {
-    userrole = await interaction.guild?.roles.fetch(userautorole);
-  }
+    // 역할 불러오기
+    if (userautorole) {
+      userrole = await interaction.guild?.roles.fetch(userautorole);
+    }
 
-  if (botautorole) {
-    botrole = await interaction.guild?.roles.fetch(botautorole);
-  }
+    if (botautorole) {
+      botrole = await interaction.guild?.roles.fetch(botautorole);
+    }
 
-  inmsg =
-    guildData?.inmsg![0] === undefined || guildData?.inmsg![0] === null
-      ? '미정'
-      : `\`${guildData?.inmsg![0].substring(0, 7)}\``.concat('...');
+    logger.info(inspect(guildData));
 
-  outmsg =
-    guildData?.outmsg![0] === undefined || guildData?.outmsg![0] === null
-      ? '미정'
-      : `\`${guildData?.outmsg![0].substring(0, 7)}\``.concat('...');
+    const inmsg =
+      guildData?.inmsg![0] === undefined || guildData?.inmsg![0] === null
+        ? '미정'
+        : `\`${guildData?.inmsg![0].substring(0, 7)}\``.concat('...');
 
-  // 채널 구하기
+    const outmsg =
+      guildData?.outmsg![0] === undefined || guildData?.outmsg![0] === null
+        ? '미정'
+        : `\`${guildData?.outmsg![0].substring(0, 7)}\``.concat('...');
 
-  if (guildData?.inoutmsgchannel) {
-    await interaction
-      .guild!.channels.fetch(guildData?.inoutmsgchannel)
-      .then(querychannel => {
-        // 없으면
-        if (!querychannel) {
-          if (interaction.guild?.systemChannel)
-            sendchannel = interaction.guild?.systemChannel.id;
-          else {
-            // 채널 가져오기
-            interaction.guild!.channels.fetch().then(channels => {
-              if (channels.size !== 0) {
-                let isended = false;
+    // 채널 구하기
+    let sendchannel: string | undefined;
 
-                channels.forEach(channel => {
-                  if (!isended && channel!.type === ChannelType.GuildText) {
-                    isended = true;
-                    sendchannel = channel!.id;
-                  }
-                });
-              }
-            });
-          }
-        } else {
-          sendchannel = querychannel.id;
-        }
-      });
-  } else if (interaction.guild?.systemChannel)
-    sendchannel = interaction.guild?.systemChannel.id;
-  else {
-    // 채널 가져오기
-    await interaction.guild!.channels.fetch().then(channels => {
-      if (channels.size !== 0) {
-        let isended = false;
+    if (guildData?.inoutmsgchannel) {
+      interaction
+        .guild!.channels.fetch(guildData?.inoutmsgchannel)
+        .then(querychannel => {
+          logger.info(inspect(querychannel));
+          // 없으면
+          if (!querychannel) {
+            if (interaction.guild?.systemChannel)
+              sendchannel = interaction.guild?.systemChannel.id;
+            else {
+              // 채널 가져오기
+              interaction.guild!.channels.fetch().then(channels => {
+                if (channels.size !== 0) {
+                  let isended = false;
 
-        channels.forEach(channel => {
-          if (!isended && channel!.type === ChannelType.GuildText) {
-            isended = true;
-            sendchannel = channel!.id;
+                  channels.forEach(channel => {
+                    if (!isended && channel!.type === ChannelType.GuildText) {
+                      isended = true;
+                      sendchannel = channel!.id;
+                    }
+                  });
+                }
+              });
+            }
+          } else {
+            sendchannel = querychannel.id;
           }
         });
-      }
-    });
-  }
+    } else if (interaction.guild?.systemChannel)
+      sendchannel = interaction.guild?.systemChannel.id;
+    else {
+      // 채널 가져오기
+      interaction.guild!.channels.fetch().then(channels => {
+        if (channels.size !== 0) {
+          let isended = false;
 
+          channels.forEach(channel => {
+            if (!isended && channel!.type === ChannelType.GuildText) {
+              isended = true;
+              sendchannel = channel!.id;
+            }
+          });
+        }
+      });
+    }
+  } catch (e) {
+    logger.error(e);
+  }
   const page: ConfigPage = {
     name: 'inout',
     embed: new EmbedBuilder()

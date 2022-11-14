@@ -48,12 +48,19 @@ export default function GuildAdd(guild: Guild) {
             // 있으면 리턴
             if (foundguild !== null) return;
             // 없으면 생성
+            let sendchannel: TextChannel | null = null;
+
+            if (guild.systemChannel) sendchannel = guild.systemChannel;
+            // 3. 맨 먼저 채널
+            else {
+              sendchannel = channel as TextChannel;
+            }
 
             GuildModel.create({
               id: guild.id,
               warnlimit: 10,
               customdetection: '{}',
-              inoutmsgchannel: guild.systemChannel || null,
+              inoutmsgchannel: sendchannel?.id,
             });
           });
 

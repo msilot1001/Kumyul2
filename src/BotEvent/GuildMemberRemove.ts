@@ -1,16 +1,19 @@
 import {
   GuildMember,
   EmbedBuilder,
-  ChannelType,
   TextChannel,
+  ChannelType,
+  PartialGuildMember,
 } from 'discord.js';
 import { inspect } from 'util';
 import { GuildModel } from '../Database/GuildSchema.js';
+import { Values, ParseInOutMsg } from '../Utils/ParseString.js';
 import logger from '../Utils/Logger.js';
 import { color, url } from '../Config/EmbedConfig.js';
-import { Values, ParseInOutMsg } from '../Utils/ParseString.js';
 
-export default async function GuildMemberAdd(member: GuildMember) {
+export default function GuildMemberRemove(
+  member: GuildMember | PartialGuildMember,
+) {
   GuildModel.findOne({
     id: member.guild.id,
   })
@@ -20,14 +23,14 @@ export default async function GuildMemberAdd(member: GuildMember) {
         return;
       }
 
-      if (!guildData.inmsg) {
+      if (!guildData.outmsg) {
         return;
       }
 
       logger.info(inspect(guildData));
 
       // 입장메세지가 있다면
-      if (guildData?.inmsg) {
+      if (guildData?.outmsg) {
         // 컨텐츠 파싱
         const option: Values = {
           usertag: member.user.discriminator,
@@ -38,9 +41,9 @@ export default async function GuildMemberAdd(member: GuildMember) {
           membercount: `${member.guild.memberCount}`,
         };
 
-        const titlectx = ParseInOutMsg(guildData?.inmsg[0], option);
+        const titlectx = ParseInOutMsg(guildData?.outmsg[0], option);
 
-        let descctx = ParseInOutMsg(guildData?.inmsg[1], option);
+        let descctx = ParseInOutMsg(guildData?.outmsg[1], option);
 
         descctx = descctx.replace(
           /(usermention|\${usermention})/gm,

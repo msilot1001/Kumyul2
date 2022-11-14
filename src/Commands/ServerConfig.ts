@@ -29,6 +29,7 @@ import {
   OutMsgConfig,
   SysChConfig,
   UserAutoRoleConfig,
+  InOutMsgChannelConfig,
 } from '../ConfigAssets/index.js';
 
 // #region Pages
@@ -116,6 +117,7 @@ ExecuteList.set('userroleconfig', UserAutoRoleConfig);
 ExecuteList.set('botroleconfig', BotAutoRoleConfig);
 ExecuteList.set('inmsgconfig', InMsgConfig);
 ExecuteList.set('outmsgconfig', OutMsgConfig);
+ExecuteList.set('inoutmsgchannelconfig', InOutMsgChannelConfig);
 
 export { PageList, ExecuteList };
 
@@ -186,7 +188,6 @@ const command: ICommand = {
 
       collector.on('collect', async i => {
         const executecode = i.customId.substring(prefix.length);
-        logger.info(executecode);
 
         // 설정창
         if (executecode.startsWith('execute')) {
@@ -205,8 +206,6 @@ const command: ICommand = {
             // execute 하기
             const returnpage = await execute(i, uuid);
 
-            logger.info('send execute end page');
-
             replymsg = await channel.send({
               embeds: [(await returnpage(i, uuid)).embed],
               components: (await returnpage(i, uuid)).components,
@@ -218,8 +217,6 @@ const command: ICommand = {
           // 메인페이지 전송
           if (executepage) {
             if (replymsg) await replymsg.delete();
-
-            logger.info('send return page');
 
             replymsg = (await i.reply({
               embeds: [(await executepage(i, uuid)).embed],

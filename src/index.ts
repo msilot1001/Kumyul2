@@ -1,5 +1,11 @@
 // 모듈 로드
-import { Message, Interaction, Guild, GuildMember } from 'discord.js';
+import {
+  Message,
+  Interaction,
+  Guild,
+  GuildMember,
+  PartialGuildMember,
+} from 'discord.js';
 import * as dotenv from 'dotenv';
 import {
   client,
@@ -8,9 +14,11 @@ import {
   InterAcRecv,
   GuildAdd,
   GuildMemberAdd,
+  GuildMemberRemove,
 } from './BotEvent/index.js';
 import { LoadConfig } from './Config/ConfigManager.js';
 import { Connect } from './Database/DBManager.js';
+import logger from './Utils/Logger.js';
 
 // .env 로딩
 if (process.env.NODE_ENV !== 'production') {
@@ -22,20 +30,25 @@ LoadConfig().then(async () => {
 
   client.once('ready', () => Start());
 
-  client.on('messageCreate', async (msg: Message) => {
+  client.on('messageCreate', (msg: Message) => {
     MsgRecv(msg);
   });
 
-  client.on('interactionCreate', async (interaction: Interaction) => {
+  client.on('interactionCreate', (interaction: Interaction) => {
     InterAcRecv(interaction);
   });
 
-  client.on('guildCreate', async (guild: Guild) => {
+  client.on('guildCreate', (guild: Guild) => {
     GuildAdd(guild);
   });
 
-  client.on('guildMemberAdd', async (member: GuildMember) => {
+  client.on('guildMemberAdd', (member: GuildMember) => {
     GuildMemberAdd(member);
+  });
+
+  client.on('guildMemberRemove', (member: GuildMember | PartialGuildMember) => {
+    logger.info('guild member remove');
+    GuildMemberRemove(member);
   });
 
   client.login(
