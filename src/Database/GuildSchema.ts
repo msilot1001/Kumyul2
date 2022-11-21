@@ -24,7 +24,7 @@ export class GuildClass {
 
   // 공지 채널
   @prop()
-  noticechannel?: string;
+  announcechannel?: string;
 
   @prop({ ref: () => TicketClass })
   ticketlist?: Ref<TicketClass>;

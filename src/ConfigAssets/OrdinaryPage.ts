@@ -13,10 +13,10 @@ import ConfigPage from '../Interfaces/IConfigPage.js';
 const OrdinaryPage = async (interaction: BaseInteraction, uuid: string) => {
   const guildData = await GuildModel.findOne({ id: interaction.guild!.id });
 
-  let sysnoticechannel: string | undefined = guildData?.sysnoticechannel;
+  let sysnoticechannel: string | undefined;
 
   if (guildData?.sysnoticechannel) {
-    interaction
+    await interaction
       .guild!.channels.fetch(guildData?.sysnoticechannel)
       .then(querychannel => {
         // 없으면
@@ -40,7 +40,7 @@ const OrdinaryPage = async (interaction: BaseInteraction, uuid: string) => {
         }
       });
   } else {
-    interaction.guild!.channels.fetch().then(channels => {
+    await interaction.guild!.channels.fetch().then(channels => {
       if (channels.size === 0) return;
 
       let isended = false;

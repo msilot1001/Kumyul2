@@ -13,8 +13,10 @@ import {
   EmbedBuilder,
   InteractionResponse,
   BaseInteraction,
+  PermissionsBitField,
 } from 'discord.js';
 import { v1 } from 'uuid';
+import { inspect } from 'util';
 import ICommand from '../Interfaces/ICommand.js';
 import logger from '../Utils/Logger.js';
 import { color, url } from '../Config/EmbedConfig.js';
@@ -137,6 +139,28 @@ const command: ICommand = {
 
     if (!guild) return;
     if (!channel) return;
+
+    logger.info(
+      inspect(
+        (interaction.member?.permissions as PermissionsBitField).toArray(),
+      ),
+    );
+
+    if (
+      !(interaction.member?.permissions as PermissionsBitField)
+        .toArray()
+        .includes('ManageGuild') &&
+      !(interaction.member?.permissions as PermissionsBitField)
+        .toArray()
+        .includes('Administrator')
+    ) {
+      interaction.reply({
+        content: '이 명령어를 실행하려면 서버 관리하기 권한이 필요해요!',
+        ephemeral: true,
+      });
+
+      return;
+    }
 
     const uuid = v1();
 
