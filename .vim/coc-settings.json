@@ -1,18 +1,11 @@
 {
   "eslint.packageManager": "yarn",
   "eslint.nodePath": ".yarn/sdks",
-  "workspace.workspaceFolderCheckCwd": false,
-  "tsserver.tsdk": ".yarn/sdks/typescript/lib",
+  "tsserver.tsdk": "${workspaceFolder}/.yarn/sdks/typescript/lib",
+  "tsserver.useLocalTsdk": true,
   "prettier.enable": true,
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "graphql"
-  ],
   "eslint.autoFixOnSave": false,
-  "eslint.enable": true
+  "eslint.enable": true,
+  "coc.preferences.formatOnSave": true
 }
