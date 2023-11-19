@@ -1,4 +1,5 @@
-import { ActionRowBuilder, APIEmbedFooter } from 'discord.js';
+import { ActionRowBuilder, APIEmbedFooter, BaseInteraction } from 'discord.js';
+import ConfigPage from './ISettings.js';
 import IParagraph from './IParagraph.js';
 
 export default interface IPage {
@@ -21,4 +22,21 @@ export default interface IPage {
   timestamp?: Date;
   url?: string;
   actionRows?: ActionRowBuilder[];
+}
+
+/**
+ * example: class ExamplePage extends Page {
+ *  name: "example",
+ *  execute: (interaction: BaseInteraction, uuid: string): Promise<ConfigPage> => {
+ *  // code
+ * };
+ * }
+ */
+export abstract class Page {
+  abstract pageName: string;
+
+  abstract execute(
+    interaction: BaseInteraction,
+    uuid: string,
+  ): Promise<ConfigPage>;
 }

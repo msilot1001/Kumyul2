@@ -1,7 +1,11 @@
 import { CommandInteraction } from 'discord.js';
 import CommandBundle from '../commands/CommandBundle.js';
+import CustomClient from '../core/client.js';
 
-async function InterAcCommand(interaction: CommandInteraction) {
+async function InterAcCommand(
+  client: CustomClient,
+  interaction: CommandInteraction,
+) {
   // 커맨드번들에서 찾기
   const command = CommandBundle.find(
     value => value.Builder.name === interaction.commandName,
@@ -14,7 +18,7 @@ async function InterAcCommand(interaction: CommandInteraction) {
   }
 
   // 있으면 실행
-  command.SlashExecute(interaction);
+  command.SlashExecute(client, interaction);
 }
 
 export default InterAcCommand;

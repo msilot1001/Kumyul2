@@ -16,15 +16,20 @@ import {
   interactionCreate,
   messageCreate,
 } from '../eventHandlers/index.js';
-import Client from './client.js';
+import CustomClient from './client.js';
 import { IConfig } from '../interfaces/index.js';
 
 export default class Bot {
   private ready = true;
 
-  constructor(private config: IConfig, private client: Client) {
+  constructor(
+    private config: IConfig,
+    private client: CustomClient,
+    private isDev: boolean,
+  ) {
     this.config = config;
     this.client = client;
+    this.isDev = isDev;
   }
 
   /**
@@ -32,7 +37,7 @@ export default class Bot {
    */
   public async start(): Promise<void> {
     this.registerEvents();
-    await this.client.login(this.config.client.token);
+    await this.login(this.config.client.token);
   }
 
   /**
@@ -132,7 +137,7 @@ export default class Bot {
    * on Message Create Event
    */
   private async onMessageCreate(msg: Message): Promise<void> {
-    messageCreate(msg);
+    messageCreate(this.client, msg);
   }
 
   /**
@@ -140,7 +145,7 @@ export default class Bot {
    * @param interaction Interaction object
    */
   private async onInteraction(interaction: Interaction): Promise<void> {
-    interactionCreate(interaction);
+    interactionCreate(this.client, interaction);
   }
 
   /**

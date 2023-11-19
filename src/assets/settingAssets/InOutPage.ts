@@ -11,7 +11,7 @@ import {
 import { inspect } from 'util';
 import { color, url } from '../../config/EmbedConfig.js';
 import { GuildModel } from '../../Database/GuildSchema.js';
-import ConfigPage from '../../interfaces/IConfigPage.js';
+import ConfigPage from '../../interfaces/ISettings.js';
 import logger from '../../utils/logger.js';
 
 const InOutPage = async (interaction: BaseInteraction, uuid: string) => {

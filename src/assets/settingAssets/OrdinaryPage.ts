@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import { color, url } from '../../config/EmbedConfig.js';
 import { GuildModel } from '../../Database/GuildSchema.js';
-import ConfigPage from '../../interfaces/IConfigPage.js';
+import ConfigPage from '../../interfaces/ISettings.js';
 
 const OrdinaryPage = async (interaction: BaseInteraction, uuid: string) => {
   const guildData = await GuildModel.findOne({ id: interaction.guild!.id });

@@ -15,68 +15,71 @@ import {
   InteractionType,
   ButtonInteraction,
   InteractionCollector,
+  CacheType,
+  Client,
 } from 'discord.js';
 import { GuildModel } from '../../Database/GuildSchema.js';
-import ConfigPage from '../../interfaces/IConfigPage.js';
+import { ConfigWindow } from '../../interfaces/ISettings.js';
 import { InOutPage } from './index.js';
 import { color, url } from '../../config/EmbedConfig.js';
-import { client } from '../../eventHandlers/index.js';
-import logger from '../../utils/logger.js';
-import { Values, ParseInOutMsg } from '../../utils/ParseString.js';
+import { Values, parseContent } from '../../utils/parseContent.js';
+import CustomClient from '../../core/client.js';
+import { Page } from '../../interfaces/types.js';
 
-const OutMsgConfig = (
-  interaction: BaseInteraction,
-  uuid: string,
-): Promise<
-  (interaction1: BaseInteraction, uuid1: string) => Promise<ConfigPage>
-> =>
-  new Promise<
-    (interaction2: BaseInteraction, uuid2: string) => Promise<ConfigPage>
-  >(async (resolve, reject) => {
-    const parentPage = InOutPage;
+const OutMsgConfig = new ConfigWindow(
+  'outmsgconfig',
+  (
+    interaction: BaseInteraction<CacheType>,
+    uuid: string,
+    client: CustomClient,
+  ) =>
+    new Promise<Page>(async (resolve, reject) => {
+      const parentPage = InOutPage;
 
-    // Create the modal
-    const modal = new ModalBuilder()
-      .setCustomId(`cmodal.${uuid}`)
-      .setTitle('퇴장 메시지 설정');
+      // Create the modal
+      const modal = new ModalBuilder()
+        .setCustomId(`cmodal.${uuid}`)
+        .setTitle('퇴장 메시지 설정');
 
-    // Add components to modal
+      // Add components to modal
 
-    // Create the text input components
-    const input1 = new TextInputBuilder()
-      .setCustomId(`cmodal.${uuid}.title`)
-      .setLabel('제목')
-      .setStyle(TextInputStyle.Short);
+      // Create the text input components
+      const input1 = new TextInputBuilder()
+        .setCustomId(`cmodal.${uuid}.title`)
+        .setLabel('제목')
+        .setStyle(TextInputStyle.Short);
 
-    const input2 = new TextInputBuilder()
-      .setCustomId(`cmodal.${uuid}.desc`)
-      .setLabel('본문')
-      .setStyle(TextInputStyle.Paragraph);
+      const input2 = new TextInputBuilder()
+        .setCustomId(`cmodal.${uuid}.desc`)
+        .setLabel('본문')
+        .setStyle(TextInputStyle.Paragraph);
 
-    const actionRow1 =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        input1,
-      );
-    const actionRow2 =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        input2,
-      );
+      const actionRow1 =
+        new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+          input1,
+        );
+      const actionRow2 =
+        new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+          input2,
+        );
 
-    modal.addComponents(actionRow1, actionRow2);
+      modal.addComponents(actionRow1, actionRow2);
 
-    (interaction as ButtonInteraction).showModal(modal);
+      (interaction as ButtonInteraction).showModal(modal);
 
-    // collector
-    const collector = new InteractionCollector(client, {
-      guild: interaction.guild!,
-      interactionType: InteractionType.ModalSubmit,
-    });
+      // collector
+      const collector = new InteractionCollector(client as Client, {
+        guild: interaction.guild!,
+        interactionType: InteractionType.ModalSubmit,
+      });
 
-    collector.filter = (i: CollectedInteraction) =>
-      i.user.id === interaction.user.id;
+      collector.filter = (i: CollectedInteraction) =>
+        i.user.id === interaction.user.id;
 
-    collector.on('collect', async (i: ModalSubmitInteraction) => {
-      if (i.customId === `cmodal.${uuid}`) {
+      collector.on('collect', async (i: ModalSubmitInteraction) => {
+        if (i.customId === `cmodal.${uuid}`) {
+          return;
+        }
         const title = i.fields.getTextInputValue(`cmodal.${uuid}.title`);
         const desc = i.fields.getTextInputValue(`cmodal.${uuid}.desc`);
 
@@ -109,9 +112,9 @@ const OutMsgConfig = (
           membercount: `${i.guild?.memberCount}`,
         };
 
-        const titlectx = ParseInOutMsg(title, option);
+        const titlectx = parseContent(title, option);
 
-        let descctx = ParseInOutMsg(desc, option);
+        let descctx = parseContent(desc, option);
 
         descctx = descctx.replace(
           /(usermention|\${usermention})/gm,
@@ -170,10 +173,11 @@ const OutMsgConfig = (
 
             resolve(parentPage);
           } catch (e) {
-            logger.error(e);
+            client.getLogger().error(e);
           }
         });
-      }
-    });
-  });
+      });
+    }),
+);
+
 export default OutMsgConfig;

@@ -1,29 +1,9 @@
 // 모듈 로드
-import {
-  Message,
-  Interaction,
-  Guild,
-  GuildMember,
-  PartialGuildMember,
-  Partials,
-  Options,
-} from 'discord.js';
+import { Partials, Options } from 'discord.js';
 import * as dotenv from 'dotenv';
-import { inspect } from 'util';
-// import {
-//   Start,
-//   MsgRecv,
-//   InterAcRecv,
-//   GuildAdd,
-//   GuildMemberAdd,
-//   GuildMemberRemove,
-// } from './EventHandler/index.js';
-
-import { Connect } from './Database/DBManager.js';
-import logger from './utils/logger.js';
-import { CdecClient } from './eventHandlers/MainHandler.ts';
 import Config from './config/index.js';
 import Bot from './core/bot.js';
+import CustomClient from './core/client.js';
 
 // .env 로딩
 if (process.env.NODE_ENV !== 'production') {
@@ -33,7 +13,7 @@ const config = await new Config().LoadConfig();
 
 // Bot Entry Point
 async function start(): Promise<void> {
-  const client: CdecClient = new CdecClient({
+  const client: CustomClient = new CustomClient({
     intents: config.client?.intents ?? 0,
     partials: config.client?.partials
       ? config.client.partials.map(
@@ -57,41 +37,9 @@ async function start(): Promise<void> {
     },
   });
 
-  const bot = new Bot(config, client);
+  const bot = new Bot(config, client, process.env.NODE_ENV === 'production');
 
   await bot.start();
 }
 
 start();
-// LoadConfig().then(async () => {
-//   await Connect();
-
-//   client.once('ready', () => Start());
-
-//   client.on('messageCreate', (msg: Message) => {
-//     MsgRecv(msg);
-//   });
-
-//   client.on('interactionCreate', (interaction: Interaction) => {
-//     InterAcRecv(interaction);
-//   });
-
-//   client.on('guildCreate', (guild: Guild) => {
-//     GuildAdd(guild);
-//   });
-
-//   client.on('guildMemberAdd', (member: GuildMember) => {
-//     GuildMemberAdd(member);
-//   });
-
-//   client.on('guildMemberRemove', (member: GuildMember | PartialGuildMember) => {
-//     logger.info('guild member remove');
-//     GuildMemberRemove(member);
-//   });
-
-//   client.login(
-//     process.env.NODE_ENV === 'production'
-//       ? process.env.TOKEN
-//       : process.env.TESTTOKEN,
-//   );
-// });

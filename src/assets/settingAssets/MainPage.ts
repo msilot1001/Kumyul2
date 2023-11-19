@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { inspect } from 'util';
 import { color, url } from '../../config/EmbedConfig.js';
-import ConfigPage from '../../interfaces/IConfigPage.js';
+import ConfigPage from '../../interfaces/ISettings.js';
 import PageBuilder from '../../pages/PageBuilder.js';
 import logger from '../../utils/logger.js';
 

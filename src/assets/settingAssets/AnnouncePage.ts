@@ -6,7 +6,7 @@ import {
   BaseInteraction,
   ChannelType,
 } from 'discord.js';
-import ConfigPage from '../../interfaces/IConfigPage.js';
+import ConfigPage from '../../interfaces/ISettings.js';
 import { url, color } from '../../config/EmbedConfig.js';
 import { GuildModel } from '../../Database/GuildSchema.js';
 

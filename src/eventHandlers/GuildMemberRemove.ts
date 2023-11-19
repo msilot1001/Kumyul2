@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { inspect } from 'util';
 import { GuildModel } from '../Database/GuildSchema.js';
-import { Values, ParseInOutMsg } from '../utils/ParseString.js';
+import { Values, parseContent } from '../utils/parseContent.js';
 import logger from '../utils/logger.js';
 import { color, url } from '../config/EmbedConfig.js';
 
@@ -41,9 +41,9 @@ export default function GuildMemberRemove(
           membercount: `${member.guild.memberCount}`,
         };
 
-        const titlectx = ParseInOutMsg(guildData?.outmsg[0], option);
+        const titlectx = parseContent(guildData?.outmsg[0], option);
 
-        let descctx = ParseInOutMsg(guildData?.outmsg[1], option);
+        let descctx = parseContent(guildData?.outmsg[1], option);
 
         descctx = descctx.replace(
           /(usermention|\${usermention})/gm,

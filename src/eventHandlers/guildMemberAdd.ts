@@ -8,7 +8,7 @@ import { inspect } from 'util';
 import { GuildModel } from '../Database/GuildSchema.js';
 import logger from '../utils/logger.js';
 import { color, url } from '../config/EmbedConfig.js';
-import { Values, ParseInOutMsg } from '../utils/ParseString.js';
+import { Values, parseContent } from '../utils/parseContent.js';
 
 export default async function guildMemberAdd(member: GuildMember) {
   GuildModel.findOne({
@@ -38,9 +38,9 @@ export default async function guildMemberAdd(member: GuildMember) {
           membercount: `${member.guild.memberCount}`,
         };
 
-        const titlectx = ParseInOutMsg(guildData?.inmsg[0], option);
+        const titlectx = parseContent(guildData?.inmsg[0], option);
 
-        let descctx = ParseInOutMsg(guildData?.inmsg[1], option);
+        let descctx = parseContent(guildData?.inmsg[1], option);
 
         descctx = descctx.replace(
           /(usermention|\${usermention})/gm,
