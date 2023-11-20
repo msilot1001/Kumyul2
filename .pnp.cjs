@@ -3724,7 +3724,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["discord.js", [\
         ["npm:14.11.0", {\
-          "packageLocation": "./.yarn/cache/discord.js-npm-14.11.0-6e80fbad2d-2ec38936b6.zip/node_modules/discord.js/",\
+          "packageLocation": "./.yarn/cache/discord.js-npm-14.11.0-6e80fbad2d-63e0a312c4.zip/node_modules/discord.js/",\
           "packageDependencies": [\
             ["discord.js", "npm:14.11.0"],\
             ["@discordjs/builders", "npm:1.6.5"],\

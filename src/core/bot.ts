@@ -37,7 +37,14 @@ export default class Bot {
    */
   public async start(): Promise<void> {
     this.registerEvents();
-    await this.login(this.config.client.token);
+
+    // login with test token if testmode is enabled
+    await this.login(
+      this.config.client.testmode?.enabled === true &&
+        this.config.client.testmode?.token
+        ? this.config.client.testmode.token
+        : this.config.client.token,
+    );
   }
 
   /**

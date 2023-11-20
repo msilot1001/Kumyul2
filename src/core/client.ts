@@ -1,6 +1,6 @@
 import { Client, ActivityOptions } from 'discord.js';
 import { Logger } from 'winston';
-import logger from '../utils/logger';
+import logger from '../utils/logger.js';
 
 export default class CustomClient extends Client {
   public getLogger(): Logger {

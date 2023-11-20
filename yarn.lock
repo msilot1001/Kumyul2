@@ -3119,7 +3119,7 @@ __metadata:
     tslib: ^2.5.0
     undici: ^5.22.0
     ws: ^8.13.0
-  checksum: 2ec38936b622d9cec9736b6e90014bae21a3909a747b46451504b728066066c4458b8abd1781f0b7f652c96e177c8a6986845bf5044cae65bbbf8cb2143b857a
+  checksum: 63e0a312c4ee89b03bfd16f3d58ff185d1e4cee75aa2d75de7a56d049a0bcddb89e16ae77cb02ddf0272072698d490c6a98959a8a90dd68ac6175a3ee50a191d
   languageName: node
   linkType: hard
 

@@ -8,10 +8,10 @@ export default interface IConfig {
   client: {
     id: string;
     token: string;
-    testmode: {
+    testmode?: {
       enabled: boolean;
-      id: string;
-      token: string;
+      id?: string;
+      token?: string;
     };
     intents?: Array<BitFieldResolvable<GatewayIntentsString, number>>;
     partials?: string[];

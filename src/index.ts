@@ -1,6 +1,7 @@
 // 모듈 로드
 import { Partials, Options } from 'discord.js';
 import * as dotenv from 'dotenv';
+import { inspect } from 'util';
 import Config from './config/index.js';
 import Bot from './core/bot.js';
 import CustomClient from './core/client.js';
@@ -36,6 +37,8 @@ async function start(): Promise<void> {
       },
     },
   });
+
+  client.getLogger().info(inspect(config, true, 10, true));
 
   const bot = new Bot(config, client, process.env.NODE_ENV === 'production');
 
