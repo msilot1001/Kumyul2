@@ -1,4 +1,4 @@
-# Migrated to [Sojakstudio/Kumyul2](https://github.com/sojakstudio/kumyul2)
+<h1 align=center> Migrated to <a href="https://github.com/sojakstudio/kumyul2">Sojakstudio/Kumyul2</a> </h1>
 
 <h1 align=center>
   CdecBot
