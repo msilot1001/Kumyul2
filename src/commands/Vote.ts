@@ -82,6 +82,7 @@ const command: ICommand = {
 
     modal.addComponents(actionRow1, actionRow2);
 
+    // create modal input window
     interaction.showModal(modal);
 
     // collector
@@ -93,6 +94,7 @@ const command: ICommand = {
     collector.filter = (i: CollectedInteraction) =>
       i.user.id === interaction.user.id;
 
+    // when modal returned
     collector.on('collect', async (i: ModalSubmitInteraction) => {
       if (i.customId === `cvotemodal.${id}`) {
         const topic = i.fields.getTextInputValue(`cvotemodal.${id}.topic`);
@@ -146,7 +148,7 @@ const command: ICommand = {
           makername: `${interaction.user.username}#${interaction.user.discriminator}`,
         });
 
-        interaction.reply({
+        await interaction.followUp({
           content: '투표를 성공적으로 생성했어요!',
           ephemeral: true,
         });

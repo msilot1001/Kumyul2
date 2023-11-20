@@ -20,4 +20,7 @@ export default interface IConfig {
   commands?: {
     enableMessageCommand?: boolean;
   };
+  database: {
+    mongoURL: string;
+  };
 }

@@ -18,6 +18,7 @@ import {
 } from '../eventHandlers/index.js';
 import CustomClient from './client.js';
 import { IConfig } from '../interfaces/index.js';
+import mongoConnect from '../Database/DBManager.js';
 
 export default class Bot {
   private ready = true;
@@ -45,6 +46,9 @@ export default class Bot {
         ? this.config.client.testmode.token
         : this.config.client.token,
     );
+
+    // connect to mongoDB
+    await mongoConnect(this.config);
   }
 
   /**
