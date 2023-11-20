@@ -113,24 +113,18 @@ export default class Bot {
     setInterval(() => {
       // activity list
       const activitylist: ActivityOptions[] = [
+        { name: '귀여운 관리봇 시덱이', type: ActivityType.Listening },
+        { name: 'Sojak Studio!', type: ActivityType.Playing },
+        { name: ' 도움은 "/도움말"', type: ActivityType.Listening },
         {
-          name: '닝겐들 명령',
-          type: ActivityType.Listening,
-        },
-        { name: '너님의 명령', type: ActivityType.Listening },
-        { name: '욕설을 검열', type: ActivityType.Playing },
-        { name: '시덱인 귀여웡 이라고', type: ActivityType.Playing },
-        { name: '당신네 서버에서 검열놀이', type: ActivityType.Playing },
-        {
-          name: `${this.client.guilds.cache.size} 서버와 함께`,
+          name: `${this.client.guilds.cache.size}개의 서버와 함께`,
           type: ActivityType.Playing,
         },
         {
           name: `${this.client.guilds.cache.reduce(
-            (accumulator, currentGuild) =>
-              accumulator + currentGuild.memberCount,
-            0, // initial value
-          )}명의 이용자과 함께`,
+            (a, g) => a + g.memberCount,
+            0,
+          )}명과 함께`,
           type: ActivityType.Playing,
         },
       ];
