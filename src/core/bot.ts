@@ -109,7 +109,7 @@ export default class Bot {
       .getLogger()
       .info(`현재 연결된 클라이언트의 핑은 ${this.client.ws.ping}ms 입니다.`);
 
-    // 5 sec interval of presence renewal
+    // 5 sec interval of activity renewal
     setInterval(() => {
       // activity list
       const activitylist: ActivityOptions[] = [
