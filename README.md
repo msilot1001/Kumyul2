@@ -1,3 +1,5 @@
+# Migrated to [Sojakstudio/Kumyul2](https://github.com/sojakstudio/kumyul2)
+
 <h1 align=center>
   CdecBot
   </h1>
